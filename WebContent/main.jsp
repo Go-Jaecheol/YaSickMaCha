@@ -4,15 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>YSMC</title>
 </head>
 <body>
 	<%@ include file="./navbar.jsp" %>
-	<%
-		String test = (String)session.getAttribute("user_id");
-		if (test == null)
-	   		response.sendRedirect("./index.html"); 
-		out.println("session: " + test);
-    %>
 </body>
 </html>
