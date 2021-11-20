@@ -29,7 +29,7 @@ body {
 			<a class="navbar-brand" href="./main.jsp">컴학 야식마차!</a>
 			<ul class="nav nav-tabs justify-content-end">
 				<li class="nav-item">
-					<a class="nav-link" href="./mypage.jsp">{user_name}의 마이페이지</a>
+					<a class="nav-link" href="./mypage.jsp"><%=user_name %>의 마이페이지</a>
 				</li>
 				<li class="nav-item">	
 					<a class="nav-link" href="./signout.jsp">SIGN OUT</a>
