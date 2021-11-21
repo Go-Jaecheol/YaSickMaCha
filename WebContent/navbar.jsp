@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" session="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +21,9 @@ body {
 </head>
 <body>
 	<%
-		String user_name = (String)session.getAttribute("user_name");
+		HttpSession session = request.getSession();
+		Object getdata = session.getAttribute("user_name");
+		String user_name = (String)getdata;
 		if (user_name == null) response.sendRedirect("./index.html");
     %>
 	<nav class="navbar navbar-light bg-light">

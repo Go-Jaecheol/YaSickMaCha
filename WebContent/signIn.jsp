@@ -48,21 +48,17 @@
 				session.setAttribute("user_name", rs.getString(3)); //sname을 세션에 입력
 				rs.close();
 				pstmt.close();
-				conn.close(); %>
-				<script>
-					document.location.href="./main.jsp";
-				</script>
-			<% }
+				conn.close();
+				response.sendRedirect("main.jsp");
+			}
 		}
 		else {
 			HttpSession session = request.getSession();
 			session.setAttribute("user_name", rs.getString(1)); //aid를 세션에 입력
 			rs.close();
 			pstmt.close();
-			conn.close(); %>
-			<script>
-				document.location.href="./adminPage.jsp";
-			</script>
-		<% } %>
+			conn.close();
+			response.sendRedirect("adminPage.jsp");
+		} %>
 </body>
 </html>
