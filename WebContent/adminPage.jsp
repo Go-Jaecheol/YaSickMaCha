@@ -59,10 +59,10 @@
 <body>
 	<%
 		String serverIP = "localhost";
-		String strSID = "ORCLCDB";
+		String strSID = "orcl";
 		String portNum = "1521";
-		String user = "lucifer";
-		String pass = "1234";
+		String user = "db11";
+		String pass = "db11";
 		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
 		
 		String query="";

@@ -22,27 +22,46 @@
 		
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		conn=DriverManager.getConnection(url, user, pass);
-		query = "SELECT Sid, Pwd, Sname, Phone, Membership, Dno "
-				+ "FROM STUDENT " 
-				+ "WHERE Sid = ? AND Pwd = ?";
+		query = "SELECT Aid, Pwd, Aname "
+				+ "FROM ADMIN " 
+				+ "WHERE Aid = ? AND Pwd = ?";
 		pstmt=conn.prepareStatement(query);
 		pstmt.setString(1, request.getParameter("sid"));
 		pstmt.setString(2, request.getParameter("pwd"));
 		rs=pstmt.executeQuery();
-		if (!rs.next()) { %>
-			<script>
-				alert("아이디나 비밀번호가 틀렸습니다.");
-				document.location.href="./index.html";
-			</script>
-		<% }
+		if (!rs.next()) {
+			query = "SELECT Sid, Pwd, Sname, Phone, Membership, Dno "
+					+ "FROM STUDENT " 
+					+ "WHERE Sid = ? AND Pwd = ?";
+			pstmt=conn.prepareStatement(query);
+			pstmt.setString(1, request.getParameter("sid"));
+			pstmt.setString(2, request.getParameter("pwd"));
+			rs=pstmt.executeQuery();
+			if (!rs.next()) { %>
+				<script>
+					alert("아이디나 비밀번호가 틀렸습니다.");
+					document.location.href="./index.html";
+				</script>
+			<% }
+			else {
+				HttpSession session = request.getSession();
+				session.setAttribute("user_name", rs.getString(3)); //sname을 세션에 입력
+				rs.close();
+				pstmt.close();
+				conn.close(); %>
+				<script>
+					document.location.href="./main.jsp";
+				</script>
+			<% }
+		}
 		else {
 			HttpSession session = request.getSession();
-			session.setAttribute("user_name", rs.getString(3)); //sname을 세션에 입력
+			session.setAttribute("user_name", rs.getString(1)); //aid를 세션에 입력
 			rs.close();
 			pstmt.close();
 			conn.close(); %>
 			<script>
-				document.location.href="./main.jsp";
+				document.location.href="./adminPage.jsp";
 			</script>
 		<% } %>
 </body>
