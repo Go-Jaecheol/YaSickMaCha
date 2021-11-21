@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
 pageEncoding="UTF-8" import="java.text.*, java.sql.*"%>
-<%
-    // 인코딩
-    request.setCharacterEncoding("utf-8");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +8,7 @@ pageEncoding="UTF-8" import="java.text.*, java.sql.*"%>
 </head>
 <body>
 	<%
+    	request.setCharacterEncoding("utf-8");
 		String serverIP = "localhost";
 		String strSID = "orcl";
 		String portNum = "1521";
