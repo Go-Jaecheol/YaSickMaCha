@@ -40,16 +40,26 @@ pageEncoding="UTF-8" import="java.text.*, java.sql.*"%>
 			pstmt.setString(3, request.getParameter("sname"));
 			pstmt.setString(4, request.getParameter("phone"));
 			pstmt.setString(5, "N");
-			System.out.println(request.getParameter("dno"));
 			if (request.getParameter("dno").equals("심컴")) dno = 1;
 			else if (request.getParameter("dno").equals("글솦")) dno = 2;
 			pstmt.setInt(6, dno);
-			System.out.println(dno);
 			res=pstmt.executeUpdate();
+			response.sendRedirect("index.html");
 		}
-		else {
-			out.println("이미 등록된 학생입니다. Sign In 해주시기 바랍니다.");
-		}
-	%>
+		else { %>
+			<!-- 이미 가입된 학번, 비밀번호가 있는 경우
+			<div id="alreadyAlert"></div>
+			<script>
+				$('#alreadyAlert').click(function () {
+					var wrapper = document.createElement('div')
+					wrapper.innerHTML = '<div class="alert alert-danger alert-dismissible" role="alert">이미 등록된 학생입니다. Sign In 해주시기 바랍니다.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+		
+		     		alreadyAlert.append(wrapper)
+				})
+				document.location.href="./index.html";
+			</script>
+			-->
+		<% } 
+		%>
 </body>
 </html>
