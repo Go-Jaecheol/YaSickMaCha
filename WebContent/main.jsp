@@ -5,6 +5,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/bootstrap.css">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script type="text/javascript">
+    function handleModal(element) {
+    	var info = element.getElementsByTagName("span");
+    	
+    	document.getElementById("menuInfoName").innerHTML = info[1].innerHTML;
+    	document.getElementById("menuInfoQuantity").innerHTML = info[2].innerHTML;
+    	document.getElementById("menuInfoMembership").innerHTML = info[3].innerHTML;
+    	document.getElementById("menuInfoStore").innerHTML = info[4].innerHTML;
+    }
+</script>
 <style type="text/css">
 html {
 	height: 100%;
@@ -35,7 +49,7 @@ body {
 #menuContent {
 	height: 150px;
  	width: 150px;
-	margin: 10px;
+	margin: 5px;
 	border: 2px solid;
 	cursor: pointer;
 	border-radius: 5px;
@@ -110,8 +124,12 @@ body {
 				String IsMenuForMembership = rs.getString(4);
 				String StoreN = rs.getString(5);
 	%>
-				<div id="menuContent" class="container">
-					<%= Mid + " | " + Mname + " | " + Quantity + " | " + IsMenuForMembership + " | " + StoreN %>
+				<div id="menuContent" class="container" data-bs-toggle="modal" data-bs-target="#menuModal" onclick="handleModal(this)">
+					<span><%=Mid %></span>
+					<span><%=Mname %></span>
+					<span><%=Quantity %></span>
+					<span><%=IsMenuForMembership %></span>
+					<span><%=StoreN %></span>
 				</div>
 	<%
 			}
@@ -122,6 +140,27 @@ body {
 		pstmt.close();
 		conn.close();
 	%>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuInfoName" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="menuInfoName"></h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	        <p id="menuInfoStore"></p>
+	        <p id="menuInfoQuantity"></p>
+	        <p id="menuInfoMembership"></p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 </body>
 </html>
