@@ -84,8 +84,8 @@ h3 {
 	  			rs=pstmt.executeQuery();
 	  			if (!rs.next()) { %>
 				<script>
-					alert("아이디나 비밀번호가 틀렸습니다.");
-					document.location.href="./index.html";
+					alert("당신은 누구십니까.");
+					document.location.href="signout.jsp";
 				</script>
   				<% }
 	  			else {
@@ -159,7 +159,7 @@ h3 {
 					<div class="modal-body">
 	        		<%
 						// 수정할 수 없는 거는 readonly로
-						out.println("<form action=\"ratingInsert.jsp\" method=\"POST\">");
+						out.println("<form action=\"mypageUpdate.jsp\" method=\"POST\">");
 						out.println("<h3>" + sname + "님의 회원 정보 수정</h3>");
 	        			out.println("<div class=\"input-group mb-3\">");
 	        			out.println("<span class=\"input-group-text\" id=\"sidLabel\">학번</span>");
@@ -167,7 +167,7 @@ h3 {
 	        			out.println("</div>");
 	        			out.println("<div class=\"input-group mb-3\">");
 	        			out.println("<span class=\"input-group-text\" id=\"snameLabel\">이름</span>");
-	        			out.println("<input class=\"form-control\" type=\"text\" value=\"" + sname + "\" aria-describedby=\"snameLabel\">");
+	        			out.println("<input class=\"form-control\" name=\"sname\" type=\"text\" value=\"" + sname + "\" aria-describedby=\"snameLabel\" required>");
 	        			out.println("</div>");
 	        			out.println("<div class=\"input-group mb-3\">");
 	        			out.println("<span class=\"input-group-text\" id=\"phoneLabel\">휴대폰 번호</span>");
@@ -179,15 +179,15 @@ h3 {
 	        			out.println("</div>");
 	        			out.println("<div class=\"input-group mb-3\">");
 	        			out.println("<div class=\"form-check form-check-inline\">");
-	        			out.println("<input class=\"form-check-input\" type=\"radio\" id=\"depart1\" value=\"심컴\">");
+	        			out.println("<input class=\"form-check-input\" type=\"radio\" name=\"depart\" id=\"depart1\" value=\"심컴\" checked>");
 	        			out.println("<label class=\"form-check-label\" for=\"depart1\">심컴</label>");
 	        			out.println("</div>");
 	        			out.println("<div class=\"form-check form-check-inline\">");
-   	        			out.println("<input class=\"form-check-input\" type=\"radio\" id=\"depart2\" value=\"글솦\">");
+   	        			out.println("<input class=\"form-check-input\" type=\"radio\" name=\"depart\" id=\"depart2\" value=\"글솦\">");
    	        			out.println("<label class=\"form-check-label\" for=\"depart2\">글솦</label>");
    	        			out.println("</div>");
-	        			out.println("</div>");
-						out.println("<button type=\"button\" class=\"btn btn-outline-primary form-control\" id=\"commitBtn\" type=\"submit\">수정 완료</button>");
+	        			out.println("</div><br/>");
+						out.println("<button class=\"btn btn-outline-primary form-control\" id=\"commitBtn\" type=\"submit\">수정 완료</button>");
 						out.println("</form>");
 		  			%>
 	      			</div>
