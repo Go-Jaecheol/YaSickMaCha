@@ -9,7 +9,15 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="./css/global.css">
-
+<style type="text/css">
+.nav-link {
+	transition: background-color .5s;
+}
+.nav-link:hover {
+	background-color: #0d6efd;
+	color: white;
+}
+</style>
 <title>YSMC</title>
 </head>
 <body>
@@ -21,13 +29,13 @@
     %>
 	<nav class="navbar navbar-light bg-light">
 		<div class="container-fluid">
-			<a class="navbar-brand" style="display: contents;" href="./main.jsp"><img src="./image/logo.png" width="8%"></a>
-			<ul class="nav nav-tabs justify-content-end">
+			<a class="navbar-brand" style="display: contents;" href="./main.jsp"><img src="./image/logo.png" width="9%"></a>
+			<ul class="nav nav-pills nav-fill justify-content-end" id="navTabs">
 				<li class="nav-item">
-					<a class="nav-link" href="./mypage.jsp"><%=user_name %>의 마이페이지</a>
+					<a class="nav-link" data-toggle="tab" href="./mypage.jsp"><%=user_name %>의 마이페이지</a>
 				</li>
 				<li class="nav-item">	
-					<a class="nav-link" href="./signout.jsp">SIGN OUT</a>
+					<a class="nav-link" data-toggle="tab" href="./signout.jsp">SIGN OUT</a>
 				</li>
 			</ul>
 		</div>

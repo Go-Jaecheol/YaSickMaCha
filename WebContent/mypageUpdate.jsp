@@ -47,6 +47,7 @@
 		
 		pstmt.close();
 		conn.close();
+		
 		response.sendRedirect("mypage.jsp");
 	%>
 </body>

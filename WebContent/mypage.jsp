@@ -39,12 +39,6 @@ h3 {
 	float: right;
 }
 </style>
-<script type="text/javascript">
-	function drawStar(target) {
-		console.log(target);
-    	document.querySelector(`.star span`).style.width = `${target.value * 10}%`;
-  	}
-</script>
 <title>YSMC</title>
 </head>
 <body>
@@ -166,7 +160,7 @@ h3 {
 	        			out.println("<input class=\"form-control\" type=\"text\" value=\"" + sid + "\" aria-describedby=\"sidLabel\" readonly>");
 	        			out.println("</div>");
 	        			out.println("<div class=\"input-group mb-3\">");
-	        			out.println("<span class=\"input-group-text\" id=\"snameLabel\">이름</span>");
+	        			out.println("<span class=\"input-group-text\" id=\"snameLabel\">이름(7글자 이내)</span>");
 	        			out.println("<input class=\"form-control\" name=\"sname\" type=\"text\" value=\"" + sname + "\" aria-describedby=\"snameLabel\" required>");
 	        			out.println("</div>");
 	        			out.println("<div class=\"input-group mb-3\">");
@@ -245,6 +239,24 @@ h3 {
 		  			%>
 	      			</div>
 	    		</div>
+		  	</div>
+		</div>
+	</div>
+		
+	<!-- <script>
+		var completeToast = document.getElementById('completeToast');
+		var toast = new bootstrap.Toast(completeToast);
+		toast.show();
+	</script> -->
+	<div class="postion-fixed bottom-0 end-0 p-3" style="z-index:11">
+		<div id="completeToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+		  	<div class="toast-header">
+		    	<strong class="me-auto">알림</strong>
+		    	<small>방금 전</small>
+		    	<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+		  	</div>
+		  	<div class="toast-body">
+		    	회원 정보가 정상적으로 변경되었습니다!
 		  	</div>
 		</div>
 	</div>
