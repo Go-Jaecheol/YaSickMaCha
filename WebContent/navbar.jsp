@@ -8,15 +8,8 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
-<style type="text/css">
-html {
-	height: 100%;
-}
-body {
-	margin: 0;
-	height: 100%;
-}
-</style>
+<link rel="stylesheet" href="./css/global.css">
+
 <title>YSMC</title>
 </head>
 <body>
@@ -28,7 +21,7 @@ body {
     %>
 	<nav class="navbar navbar-light bg-light">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="./main.jsp">컴학 야식마차!</a>
+			<a class="navbar-brand" style="display: contents;" href="./main.jsp"><img src="./image/logo.png" width="8%"></a>
 			<ul class="nav nav-tabs justify-content-end">
 				<li class="nav-item">
 					<a class="nav-link" href="./mypage.jsp"><%=user_name %>의 마이페이지</a>

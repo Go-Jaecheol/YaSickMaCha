@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
+<link rel="stylesheet" href="./css/global.css">
 
 <script type="text/javascript">
     function toggle() {
@@ -23,20 +24,16 @@
 </script>
 
 <style type="text/css">
-html {
-	height: 100%;
-}
 body {
-	margin: 0;
-	height: 100%;
 	text-align: center;
 }
-h1 {
+img {
 	padding: 30px;
 }
 #signForm {
+	width: 550px;
 	margin-top: 30px;
-	padding-bottom: 20px;
+	padding: 0 30px 20px 30px;
 	border-radius: 10px;
 	box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
 }
@@ -51,7 +48,7 @@ h3 {
 <title>YSMC</title>
 </head>
 <body>
-	<h1>경북대학교 컴퓨터학부 야식마차</h1>
+	<img src="./image/main.png" width="40%">
 	<div id="signForm" class="container">
 		<div id="signIn">
 			<form action="signIn.jsp" method="POST">
@@ -65,7 +62,7 @@ h3 {
 					<label for="floatingPwd">비밀번호</label>
 				</div>
 				<br/>
-				<button class="btn btn-outline-primary btn-lg form-control" id="signBtn" type="submit">Sign in</button>
+				<button class="btn btn-outline-primary btn-lg form-control" type="submit">Sign in</button>
 			</form>
 		</div>
 		<div id="signUp">
@@ -92,7 +89,7 @@ h3 {
 					<label for="floatingDept">전공(ex: 심컴, 글솦)</label>
 				</div>
 				<br/>
-				<button class="btn btn-outline-primary btn-lg form-control" id="signBtn" type="submit">Sign up</button>
+				<button class="btn btn-outline-primary btn-lg form-control" type="submit">Sign up</button>
 			</form>
 		</div>
 		<br/>

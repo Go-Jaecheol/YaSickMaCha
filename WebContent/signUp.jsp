@@ -25,10 +25,11 @@ pageEncoding="UTF-8" import="java.text.*, java.sql.*"%>
 		conn=DriverManager.getConnection(url, user, pass);
 		query = "SELECT Sname, Phone, Membership, Dno "
 				+ "FROM STUDENT " 
-				+ "WHERE Sid = ? AND Pwd = ?";
+				+ "WHERE Sid = ? AND Pwd = ? AND Phone = ?";
 		pstmt=conn.prepareStatement(query);
 		pstmt.setString(1, request.getParameter("sid"));
 		pstmt.setString(2, request.getParameter("pwd"));
+		pstmt.setString(3, request.getParameter("phone"));
 		rs=pstmt.executeQuery();
 		if (!rs.next()) {
 			query = "INSERT "
