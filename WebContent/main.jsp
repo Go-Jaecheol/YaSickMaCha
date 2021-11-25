@@ -10,13 +10,11 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script type="text/javascript">
-    function handleModal(element) {
+    function handleMenuInfo(element) {
     	var info = element.getElementsByTagName("span");
+    	var mid = info[0].innerHTML;
     	
-    	document.getElementById("menuInfoName").innerHTML = info[1].innerHTML;
-    	document.getElementById("menuInfoQuantity").innerHTML = info[2].innerHTML;
-    	document.getElementById("menuInfoMembership").innerHTML = info[3].innerHTML;
-    	document.getElementById("menuInfoStore").innerHTML = info[4].innerHTML;
+    	document.location.href = "menuInfo.jsp?mid=" + mid;
     }
 </script>
 <style type="text/css">
@@ -110,11 +108,15 @@ body {
 		String exam = request.getParameter("exam");
 		
 		String seasonId = year+semester+exam;
+		String Sid = "";
 		try {
-			query = "SELECT * "
-					+ "FROM MENU " 
-					+ "WHERE SeasonId = '" + seasonId + "'";
+			query = "SELECT Mid, Mname, Quantity, IsMenuForMembership, StoreN, Membership, Sid "
+					+ "FROM MENU, STUDENT " 
+					+ "WHERE SeasonId = ? "
+					+ "AND Sname = ?";
 			pstmt=conn.prepareStatement(query);
+			pstmt.setString(1, seasonId);
+			pstmt.setString(2, user_name);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				// Fill out your code
@@ -123,41 +125,53 @@ body {
 				int Quantity = rs.getInt(3);
 				String IsMenuForMembership = rs.getString(4);
 				String StoreN = rs.getString(5);
+				String Membership = rs.getString(6);
+				Sid = rs.getString(7);
+				
+				if(IsMenuForMembership.equals("Y") && Membership.equals("N")) {
 	%>
-				<div id="menuContent" class="container" data-bs-toggle="modal" data-bs-target="#menuModal" onclick="handleModal(this)">
-					<span><%=Mid %></span>
-					<span><%=Mname %></span>
-					<span><%=Quantity %></span>
-					<span><%=IsMenuForMembership %></span>
-					<span><%=StoreN %></span>
-				</div>
+					<div id="menuContent" class="container" data-bs-toggle="modal" data-bs-target="#notMembership">
+						<span><%=Mid %></span>
+						<span><%=Mname %></span>
+						<span><%=Quantity %></span>
+						<span><%=IsMenuForMembership %></span>
+						<span><%=StoreN %></span>
+					</div>
 	<%
+				} else {
+	%>
+					<div id="menuContent" class="container" onclick="handleMenuInfo(this)">
+						
+						<span><%=Mid %></span>
+						<span><%=Mname %></span>
+						<span><%=Quantity %></span>
+						<span><%=IsMenuForMembership %></span>
+						<span><%=StoreN %></span>
+					</div>
+	<%	
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		rs.close();
 		pstmt.close();
-		conn.close();
 	%>
 	</div>
 	
-	<!-- Modal -->
-	<div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuInfoName" aria-hidden="true">
+	<!-- Not Membership Alert -->
+	<div class="modal fade" id="notMembership" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="menuInfoName"></h5>
+	        <h5 class="modal-title" id="modalLabel">Alert</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	        <p id="menuInfoStore"></p>
-	        <p id="menuInfoQuantity"></p>
-	        <p id="menuInfoMembership"></p>
+	        학생회비 납부자가 아닙니다.
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
 	      </div>
 	    </div>
 	  </div>
