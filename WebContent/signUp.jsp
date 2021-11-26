@@ -32,6 +32,7 @@ pageEncoding="UTF-8" import="java.text.*, java.sql.*"%>
 		pstmt.setString(3, request.getParameter("phone"));
 		rs=pstmt.executeQuery();
 		if (!rs.next()) {
+			// sign up된 사용자가 아닌 경우 등록
 			query = "INSERT "
 					+ "INTO STUDENT(Sid, Pwd, Sname, Phone, Membership, Dno) " 
 					+ "VALUES(?, ?, ?, ?, ?, ?)";
