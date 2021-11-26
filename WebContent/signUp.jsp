@@ -46,7 +46,7 @@ pageEncoding="UTF-8" import="java.text.*, java.sql.*"%>
 			else if (request.getParameter("dno").equals("글솦")) dno = 2;
 			pstmt.setInt(6, dno);
 			res=pstmt.executeUpdate();
-			response.sendRedirect("index.html");
+			response.sendRedirect("main.jsp");
 		}
 		else { %>
 			<!-- 이미 가입된 학번, 비밀번호가 있는 경우

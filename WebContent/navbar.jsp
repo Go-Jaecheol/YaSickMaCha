@@ -25,7 +25,7 @@
 		HttpSession session = request.getSession();
 		Object getdata = session.getAttribute("user_name");
 		String user_name = (String)getdata;
-		if (user_name == null) response.sendRedirect("./index.html");
+		if (user_name == null) response.sendRedirect("index.jsp");
     %>
 	<nav class="navbar navbar-light bg-light">
 		<div class="container-fluid">
@@ -35,10 +35,28 @@
 					<a class="nav-link" data-toggle="tab" href="./mypage.jsp"><%=user_name %>의 마이페이지</a>
 				</li>
 				<li class="nav-item">	
-					<a class="nav-link" data-toggle="tab" href="./signout.jsp">SIGN OUT</a>
+					<button class="nav-link" data-toggle="tab" data-bs-toggle="modal" data-bs-target="#realSignoutModal">SIGN OUT</button>
 				</li>
 			</ul>
 		</div>
 	</nav>
+	
+	<div class="modal fade" id="realSignoutModal" tabindex="-1" aria-labelledby="realSignoutModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+	  		<div class="modal-content">
+	      		<div class="modal-header">
+	        		<h5 class="modal-title" id="realSignoutModalLabel">알림</h5>
+	        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      		</div>
+				<div class="modal-body">
+	       			<p>정말 SIGN OUT하시겠습니까?</p>
+	   			</div>	
+	   			<div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+			        <button type="button" class="btn btn-primary" onclick="location.href='signout.jsp'">SIGN OUT</button>
+		    	</div>
+	   		</div>
+	  	</div>
+	</div>
 </body>
 </html>

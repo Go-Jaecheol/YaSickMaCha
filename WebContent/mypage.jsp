@@ -6,9 +6,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/bootstrap.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+<script>
+	function toastShow(content, title) {
+		toastr.options = {
+		  "closeButton": false,
+		  "debug": false,
+		  "newestOnTop": false,
+		  "progressBar": true,
+		  "positionClass": "toast-bottom-right",
+		  "preventDuplicates": true,
+		  "onclick": null,
+		  "showDuration": "300",
+		  "hideDuration": "1000",
+		  "timeOut": "3000",
+		  "extendedTimeOut": "1000",
+		  "showEasing": "swing",
+		  "hideEasing": "linear",
+		  "showMethod": "fadeIn",
+		  "hideMethod": "fadeOut"
+		}
+		toastr.info(content, title);
+	};	
+</script>  
 <style type="text/css">
 html {
 	height: 100%;
@@ -83,7 +107,9 @@ h3 {
 				</script>
   				<% }
 	  			else {
-	  				sid = rs.getString(1);
+	  				String rtn = request.getParameter("isUp");
+	  				if (rtn != null && Integer.parseInt(rtn) >= 0)%> <script>toastShow("회원 정보가 수정되었습니다!", "알림");</script>
+	  				<% sid = rs.getString(1);
 	  				phone = rs.getString(2);
 	  				mem = (rs.getString(3).equals("N") ? "미제출" : "제출");
 	  				int d = rs.getInt(4);
@@ -239,24 +265,6 @@ h3 {
 		  			%>
 	      			</div>
 	    		</div>
-		  	</div>
-		</div>
-	</div>
-		
-	<!-- <script>
-		var completeToast = document.getElementById('completeToast');
-		var toast = new bootstrap.Toast(completeToast);
-		toast.show();
-	</script> -->
-	<div class="postion-fixed bottom-0 end-0 p-3" style="z-index:11">
-		<div id="completeToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-		  	<div class="toast-header">
-		    	<strong class="me-auto">알림</strong>
-		    	<small>방금 전</small>
-		    	<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-		  	</div>
-		  	<div class="toast-body">
-		    	회원 정보가 정상적으로 변경되었습니다!
 		  	</div>
 		</div>
 	</div>

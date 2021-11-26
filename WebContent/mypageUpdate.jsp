@@ -24,7 +24,7 @@
 		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
 		String query;
 		String nSname="";
-		int res, dno;
+		int res = -1, dno;
 		Connection conn=null;
 		PreparedStatement pstmt;
 	
@@ -47,8 +47,13 @@
 		
 		pstmt.close();
 		conn.close();
-		
-		response.sendRedirect("mypage.jsp");
+		%>
+		<script>
+			var r = <%= res %>;
+			var url = 'mypage.jsp?isUp=' + encodeURI(r);
+			window.location.href = url;
+		</script>
+		<% // response.sendRedirect("mypage.jsp");
 	%>
 </body>
 </html>
