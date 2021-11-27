@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page language="java" import="java.text.*, java.sql.*"%>
+<%@ include file="./navbar.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,17 +19,10 @@ body {
 	height: 100%;
 	text-align: center;
 }
-#searchBar {
-	display: flex;
-	margin-top: 50px;
-	height: 10%;
-	padding-bottom: 20px;
-	border-radius: 10px;
-	box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
-}
-#menuList {
+#menuInfo {
 	display: flex;
 	flex-wrap: wrap;
+	flex-direction: column;
 	overflow: auto;
 	margin-top: 50px;
 	height: 60%;
@@ -36,41 +30,74 @@ body {
 	border-radius: 10px;
 	box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
 }
-#menuContent {
-	height: 150px;
- 	width: 150px;
-	margin: 5px;
-	border: 2px solid;
-	cursor: pointer;
-	border-radius: 5px;
-	box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
-}
 </style>
 <title>YSMC</title>
 </head>
 <body>
-	<%@ include file="./navbar.jsp" %>
 	
 	
-	<!-- Menu Info Modal -->
-	<div class="modal" id="menuModal" tabindex="-1" aria-labelledby="menuInfoName" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="menuInfoName"></h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-	        <p id="menuInfoStore"></p>
-	        <p id="menuInfoQuantity"></p>
-	        <p id="menuInfoMembership"></p>
-	      </div>
-	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-info" data-bs-target="#completeModal" data-bs-toggle="modal" data-bs-dismiss="modal">신청</button>
+	<div id="menuInfo" class="container">
+	<% 
+		String serverIP = "localhost";
+		String strSID = "orcl";
+		String portNum = "1521";
+		String user = "db11";
+		String pass = "db11";
+		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
+		String query;
+		Connection conn=null;
+		PreparedStatement pstmt;
+		ResultSet rs;
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		conn=DriverManager.getConnection(url, user, pass);
+		conn.setAutoCommit(false);
+		
+		String menu_id = request.getParameter("mid");
+		String modal_name = "#completeModal";
+		String Sid = "";
+		query = "SELECT Mname, Quantity, IsMenuForMembership, StoreN "
+				+ "FROM MENU "
+				+ "WHERE Mid = ?";
+		pstmt=conn.prepareStatement(query);
+		pstmt.setString(1, menu_id);
+		rs=pstmt.executeQuery();
+		while(rs.next()){
+			String Mname = rs.getString(1);
+			int Quantity = rs.getInt(2);
+			String IsMenuForMembership = rs.getString(3);
+			String StoreN = rs.getString(4);
+	%>
+			<h2><%=Mname %></h2>
+			<p id="menuInfoStore"><%=Quantity %></p>
+	        <p id="menuInfoQuantity"><%=IsMenuForMembership %></p>
+	        <p id="menuInfoMembership"><%=StoreN %></p>
+	<% 
+		}
+		query = "SELECT Mid, STUDENT.Sid "
+				+ "FROM SMENU_LIST, STUDENT " 
+				+ "WHERE Sname = ? "
+				+ "AND SMENU_LIST.Sid = STUDENT.Sid";
+		pstmt=conn.prepareStatement(query);
+		pstmt.setString(1, user_name);
+		rs = pstmt.executeQuery();
+		while(rs.next()) {
+			String rsMid = rs.getString(1);
+			Sid = rs.getString(2);
+			if(rsMid.equals(menu_id)) {
+				modal_name = "#duplicatedModal";
+				break;
+			}
+		}
+	%>
+		<div class="modal-footer">
+	      	<button class="btn btn-info" data-bs-target=<%=modal_name %> data-bs-toggle="modal">신청</button>
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	      </div>
 	    </div>
-	  </div>
+	<%
+		rs.close();
+		pstmt.close();
+	%>
 	</div>
 	<!-- Complete Alert -->
 	<div class="modal fade" id="completeModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
@@ -81,62 +108,27 @@ body {
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	   <% 
-		    String serverIP = "localhost";
-			String strSID = "orcl";
-			String portNum = "1521";
-			String user = "db11";
-			String pass = "db11";
-			String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
-			String query;
-			Connection conn=null;
-			PreparedStatement pstmt;
-			ResultSet rs;
-			
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn=DriverManager.getConnection(url, user, pass);
-	   		boolean isDuplicated = false;
-	   		String Sid = "";
-	   		String menu_id = request.getParameter("mid");
-			try {
-				query = "SELECT Mid, STUDENT.Sid "
-						+ "FROM SMENU_LIST, STUDENT " 
-						+ "WHERE Sname = ? "
-						+ "AND SMENU_LIST.Sid = STUDENT.Sid";
-				pstmt=conn.prepareStatement(query);
-				pstmt.setString(1, user_name);
-				rs = pstmt.executeQuery();
-				while(rs.next()) {
-					String rsMid = rs.getString(1);
-					Sid = rs.getString(2);
-					if(rsMid.equals(menu_id)) {
-		%>
-						<p>이미 신청한 메뉴입니다.</p>
-		<%
-						isDuplicated = true;
-						break;
-					}
-				}
-				if (!isDuplicated) {
-					query = "INSERT "
-							+ "INTO SMENU_LIST " 
-							+ "VALUES(?, ?, ?)";
-					pstmt=conn.prepareStatement(query);
-					pstmt.setString(1, Sid);
-					pstmt.setString(2, "N");
-					pstmt.setString(3, menu_id);
-					int res = pstmt.executeUpdate();
-			        conn.commit();
-		%>
-					<p>신청이 완료되었습니다.</p>
-		<%
-				}
-				rs.close();
-				pstmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		%>
+	      	<p id="modalMessage"></p>
+	      	<form action="menuInfoUpdate.jsp" method="POST">
+	      		<button type="submit" name="mid" value=<%=menu_id %> class="btn btn-info">신청</button>
+	      	</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- Duplicated Alert -->
+	<div class="modal fade" id="duplicatedModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="modalLabel">Alert</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<p id="modalMessage">이미 신청한 메뉴입니다.</p>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

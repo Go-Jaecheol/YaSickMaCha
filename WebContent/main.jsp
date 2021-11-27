@@ -76,6 +76,7 @@ body {
 					
 					Class.forName("oracle.jdbc.driver.OracleDriver");
 					conn=DriverManager.getConnection(url, user, pass);
+					conn.setAutoCommit(false);
 					query = "SELECT DISTINCT SUBSTR(SeasonId, 1, 4) "
 							+ "FROM SEASON";
 					pstmt=conn.prepareStatement(query);
