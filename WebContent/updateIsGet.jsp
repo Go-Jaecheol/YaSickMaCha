@@ -24,8 +24,7 @@
 		
 		
 		String query1=""; //SMENU_LIST 업데이트 쿼리 
-		String query2=""; //MENU 업데이트 쿼리 
-		String query3=""; //RECEIVES 삽입 또는 삭제 쿼리
+		String query2=""; //RECEIVES 삽입 또는 삭제 쿼리
 		Connection conn = null;
 		PreparedStatement pstmt;
 		int rs=0;
@@ -36,13 +35,11 @@
 		
 		if(isGet == 'N'){
 			query1 = "update SMENU_LIST set isget = 'Y' where sid = '"+sid+"'";
-        	query2 = "update menu set Quantity = Quantity - 1 where mid ='"+mid+"'";
-        	query3 = "INSERT INTO RECEIVES VALUES('"+sid+"', '"+mid+"', '"+membership+"')";
+        	query2 = "INSERT INTO RECEIVES VALUES('"+sid+"', '"+mid+"', '"+membership+"')";
 		}
 		else if(isGet == 'Y'){
 			query1 = "update SMENU_LIST set isget = 'N' where sid = '"+sid+"'";
-        	query2 = "update menu set Quantity = Quantity + 1 where mid ='"+mid+"'";
-        	query3 = "DELETE from RECEIVES where StudentId='"+sid+"' and MenuId ='"+mid+"'";
+        	query2 = "DELETE from RECEIVES where StudentId='"+sid+"' and MenuId ='"+mid+"'";
 		}
 		
 		try{
@@ -50,9 +47,6 @@
 			rs = pstmt.executeUpdate();
 			
 			pstmt=conn.prepareStatement(query2);
-			rs = pstmt.executeUpdate();
-			
-			pstmt=conn.prepareStatement(query3);
 			rs = pstmt.executeUpdate();
 			
 			conn.commit();

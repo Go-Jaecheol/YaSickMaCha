@@ -37,10 +37,10 @@ body {
 	<div id="menuInfo" class="container">
 	<% 
 		String serverIP = "localhost";
-		String strSID = "orcl";
+		String strSID = "orcl"; //ORCLCDB
 		String portNum = "1521";
-		String user = "db11";
-		String pass = "db11";
+		String user = "db11"; //lucifer
+		String pass = "db11";	//1234
 		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
 		String query;
 		Connection conn=null;

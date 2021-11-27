@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page language="java" import="java.text.*, java.sql.*" %>
-  
+<%
+    // 인코딩
+    request.setCharacterEncoding("utf-8");
+%>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,9 +12,45 @@
 <title>YSMC</title>
 </head>
 <body>
-	<h1>test</h1>
 	<%
+		String serverIP = "localhost";
+		String strSID = "orcl"; //ORCLCDB
+		String portNum = "1521";
+		String user = "db11"; //lucifer
+		String pass = "db11";	//1234
+		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
+		
+		String query="";
+		Connection conn = null;
+		PreparedStatement pstmt;
+		ResultSet rs;
+		int cnt=0;
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		conn=DriverManager.getConnection(url, user, pass);
+		conn.setAutoCommit(false);
+		
+		int check = 0;
 		String mid = request.getParameter("mid");
+		if (mid == null){
+			while(true){
+				mid = Integer.toString((int)(Math.random() * 100000));
+				System.out.println(mid);
+				query = "select mid from menu";
+				pstmt=conn.prepareStatement(query);	
+				rs=pstmt.executeQuery();
+				while(rs.next()){
+					if(rs.getString(1).equals(mid)){
+						check = 1;
+					}
+				}
+				if(check == 1)
+					continue;
+				else
+					break;
+			}	
+		}
+		
 		System.out.println(mid);
 		String mname = request.getParameter("mname");
 		System.out.println(mname);
@@ -28,24 +67,6 @@
 		String seasonId = request.getParameter("seasonId");
 		System.out.println(seasonId);
 		
-		String serverIP = "localhost";
-		String strSID = "orcl"; //ORCLCDB
-		String portNum = "1521";
-		String user = "db11"; //lucifer
-		String pass = "db11";	//1234
-		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
-		
-		
-		String query="";
-		Connection conn = null;
-		PreparedStatement pstmt;
-		ResultSet rs;
-		int cnt=0;
-		
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-		conn=DriverManager.getConnection(url, user, pass);
-		conn.setAutoCommit(false);
-		
 		//deal with STORE table 
 		query = "select * from store where storeName = '"+storeN+"'";
 		pstmt=conn.prepareStatement(query);	
@@ -55,6 +76,7 @@
 			try {
 				query = "INSERT INTO STORE VALUES('"
 						+storeN+"', '"+address+"', '"+phone+"')";
+				System.out.println(query);
 				pstmt=conn.prepareStatement(query);
 				cnt = pstmt.executeUpdate();
 				conn.commit();
@@ -71,7 +93,7 @@
 				query = "update STORE set StoreName = '"+storeN
 						+"', Address ='"+address+"', phone = '"+phone
 						+"' where StoreName = '"+storeN+"'";
-				pstmt=conn.prepareStatement(query);
+				System.out.println(query);
 				cnt = pstmt.executeUpdate();
 				conn.commit();
 				System.out.println("update store success");
@@ -102,21 +124,48 @@
 			
 		}
 		
-		//deal with SEASON table
-		try{
-			query = "update MENU set Mname = '"+mname
-					+"', Quantity ="+quantity+", IsMenuForMembership = '"
-					+isMenuForMembership+"', StoreN = '"+storeN
-					+"', SeasonId = '"+seasonId+"' where mid = '"+mid+"'";
-			pstmt=conn.prepareStatement(query);
-			cnt = pstmt.executeUpdate();
-			conn.commit();
-			System.out.println("update menu success");
-		} catch(Exception e){
-			e.printStackTrace();
-			conn.rollback(); // if faild, rollback
-			System.out.println("update menu failed");
+		//deal with MENU table
+		query = "select * from menu where mid = "+mid;
+		pstmt=conn.prepareStatement(query);	
+		rs=pstmt.executeQuery();
+		
+		if (!rs.next()) {	//not exist
+			try {
+				query = "INSERT INTO MENU VALUES("+mid+", '"+mname+"', "+quantity+", '"
+						+isMenuForMembership+"', '"+storeN+"', '"+seasonId+"')";
+				pstmt=conn.prepareStatement(query);
+				cnt = pstmt.executeUpdate();
+				System.out.println(query);
+				conn.commit();
+				System.out.println("insert menu success");
+			} catch(Exception e){
+				e.printStackTrace();
+				conn.rollback(); // if faild, rollback
+				System.out.println(query);
+				System.out.println("insert menu failed");
+			}
+			
 		}
+		else {
+			try{
+				query = "update MENU set Mname = '"+mname
+						+"', Quantity ="+quantity+", IsMenuForMembership = '"
+						+isMenuForMembership+"', StoreN = '"+storeN
+						+"', SeasonId = '"+seasonId+"' where mid = "+mid+"";
+				pstmt=conn.prepareStatement(query);
+				cnt = pstmt.executeUpdate();
+				System.out.println(query);
+				conn.commit();
+				System.out.println("update menu success");
+			} catch(Exception e){
+				e.printStackTrace();
+				conn.rollback(); // if faild, rollback
+				System.out.println(query);
+				System.out.println("update menu failed");
+			}
+		}
+		
+		
 		
 	%>
 	
