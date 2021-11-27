@@ -6,12 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/bootstrap.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
+<link rel="stylesheet" href="css/bootstrap.css">
 <script type="text/javascript">
     function handleMenuInfo(element) {
-    	var info = element.getElementsByTagName("span");
+    	var info = element.getElementsByTagName("td");
     	var mid = info[0].innerHTML;
     	
     	document.location.href = "menuInfo.jsp?mid=" + mid;
@@ -26,6 +26,13 @@ body {
 	height: 100%;
 	text-align: center;
 }
+h1 {
+	position: relative;
+	padding: 20px;
+	width: 100%;
+	text-align: center;
+	color: gray;
+}
 #searchBar {
 	display: flex;
 	margin-top: 50px;
@@ -39,10 +46,11 @@ body {
 	flex-wrap: wrap;
 	overflow: auto;
 	margin-top: 50px;
-	height: 60%;
+	height: auto;
 	padding-bottom: 20px;
 	border-radius: 10px;
 	box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
+	align-items: center;
 }
 #menuContent {
 	height: 150px;
@@ -110,6 +118,7 @@ body {
 		
 		String seasonId = year+semester+exam;
 		String Sid = "";
+		String[] attr = {"#", "가게 이름", "메뉴 이름", "수량", "학생회비 필요여부", "조회"};
 		try {
 			query = "SELECT Mid, Mname, Quantity, IsMenuForMembership, StoreN, Membership, Sid "
 					+ "FROM MENU, STUDENT " 
@@ -119,38 +128,46 @@ body {
 			pstmt.setString(1, seasonId);
 			pstmt.setString(2, user_name);
 			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				// Fill out your code
-				String Mid = rs.getString(1);
-				String Mname = rs.getString(2);
-				int Quantity = rs.getInt(3);
-				String IsMenuForMembership = rs.getString(4);
-				String StoreN = rs.getString(5);
-				String Membership = rs.getString(6);
-				Sid = rs.getString(7);
-				
-				if(IsMenuForMembership.equals("Y") && Membership.equals("N")) {
-	%>
-					<div id="menuContent" class="container" data-bs-toggle="modal" data-bs-target="#notMembership">
-						<span><%=Mid %></span>
-						<span><%=Mname %></span>
-						<span><%=Quantity %></span>
-						<span><%=IsMenuForMembership %></span>
-						<span><%=StoreN %></span>
-					</div>
-	<%
-				} else {
-	%>
-					<div id="menuContent" class="container" onclick="handleMenuInfo(this)">
-						
-						<span><%=Mid %></span>
-						<span><%=Mname %></span>
-						<span><%=Quantity %></span>
-						<span><%=IsMenuForMembership %></span>
-						<span><%=StoreN %></span>
-					</div>
-	<%	
+			out.println("<table class=" + "table table-primary table-hover" + ">");
+			
+			if (!rs.next()) {
+				out.println("<h1>불러올 정보가 없습니다.</h1>");
+				out.println("</table");
+			} else {
+				out.println("<thead>");
+				out.println("<tr>");
+				for (String obj : attr) {
+					out.println("<th scope=\"col\" class=\"text-center\">" + obj +"</th>");
 				}
+				out.println("</tr>");
+				out.println("</thead>");
+				do {
+					// Fill out your code
+					String Mid = rs.getString(1);
+					String Mname = rs.getString(2);
+					int Quantity = rs.getInt(3);
+					String IsMenuForMembership = rs.getString(4);
+					String StoreN = rs.getString(5);
+					String Membership = rs.getString(6);
+					Sid = rs.getString(7);
+					
+					out.println("<tr class=\"table-active\">");
+					out.println("<td class=\"text-center\">" + Mid + "</td>");
+					out.println("<td class=\"text-center\">" + StoreN + "</td>");
+					out.println("<td class=\"text-center\">" + Mname + "</td>");
+					out.println("<td class=\"text-center\">" + Quantity + "</td>");
+					out.println("<td class=\"text-center\">" + IsMenuForMembership + "</td>");
+					
+					if(IsMenuForMembership.equals("Y") && Membership.equals("N"))
+						out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-info\" data-bs-toggle=\"modal\" data-bs-target=\"#notMembership\">Go!</button></td>");
+					else {
+						%>
+						<td class="text-center"><button type="button" class="btn btn-info" onclick="location.href='menuInfo.jsp?mid=' + <%=Mid%>;">Go!</button></td>
+						<% 
+					}
+					out.println("</tr>");
+				} while(rs.next());
+				out.println("</table");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
