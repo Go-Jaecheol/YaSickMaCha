@@ -14,7 +14,6 @@
 		HttpSession session = request.getSession();
 		Object getdata = session.getAttribute("user_name");
 		String user_name = (String)getdata;
-		if (user_name == null) response.sendRedirect("./index.html");
 		
 		String serverIP = "localhost";
 		String strSID = "orcl";
@@ -33,25 +32,36 @@
 		
 		String menu_id = request.getParameter("mid");
 		int res = -1;
-   		boolean isDuplicated = false;
+   		int menu_quan = 0;
    		String Sid = "";
 		try {
-			query = "SELECT Mid, STUDENT.Sid "
-					+ "FROM SMENU_LIST, STUDENT " 
-					+ "WHERE Sname = ? "
-					+ "AND SMENU_LIST.Sid = STUDENT.Sid";
+			query = "SELECT Sid "
+					+ "FROM STUDENT " 
+					+ "WHERE Sname = ?";
 			pstmt=conn.prepareStatement(query);
 			pstmt.setString(1, user_name);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				String rsMid = rs.getString(1);
-				Sid = rs.getString(2);
-				if(rsMid.equals(menu_id)) {
-					isDuplicated = true;
-					break;
-				}
+				Sid = rs.getString(1);
 			}
-			if (!isDuplicated) {
+			query = "SELECT Quantity "
+					+ "FROM MENU " 
+					+ "WHERE Mid = ? "
+					+ "FOR UPDATE";
+			pstmt=conn.prepareStatement(query);
+			pstmt.setString(1, menu_id);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				menu_quan = rs.getInt(1);
+			}
+			if (menu_quan > 0) {
+				query = "UPDATE MENU "
+						+ "SET Quantity = NVL(Quantity, 0)-1 " 
+						+ "WHERE Mid = ?";
+				pstmt=conn.prepareStatement(query);
+				pstmt.setString(1, menu_id);
+				res = pstmt.executeUpdate();
+			    conn.commit();
 				query = "INSERT "
 						+ "INTO SMENU_LIST " 
 						+ "VALUES(?, ?, ?)";
@@ -60,18 +70,29 @@
 				pstmt.setString(2, "N");
 				pstmt.setString(3, menu_id);
 				res = pstmt.executeUpdate();
-		        conn.commit();
+			    conn.commit();
+			    rs.close();
+				pstmt.close();
+			    %>
+			    <script>
+					alert("신청이 완료되었습니다!");
+					window.location = 'main.jsp';
+				</script>
+				<%
+			} else {
+				conn.rollback();
+				rs.close();
+				pstmt.close();
+				%>
+				<script>
+					alert("남은 수량이 없습니다!");
+					window.location = 'main.jsp';
+				</script>
+				<%
 			}
-			rs.close();
-			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		%>
-		<script>
-			var r = <%= res %>;
-			var url = 'main.jsp';
-			window.location.href = url;
-		</script>
 </body>
 </html>

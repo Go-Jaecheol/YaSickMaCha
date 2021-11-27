@@ -34,8 +34,6 @@ body {
 <title>YSMC</title>
 </head>
 <body>
-	
-	
 	<div id="menuInfo" class="container">
 	<% 
 		String serverIP = "localhost";
@@ -56,6 +54,7 @@ body {
 		String menu_id = request.getParameter("mid");
 		String modal_name = "#completeModal";
 		String Sid = "";
+		int menu_quan = 0;
 		query = "SELECT Mname, Quantity, IsMenuForMembership, StoreN "
 				+ "FROM MENU "
 				+ "WHERE Mid = ?";
@@ -67,6 +66,7 @@ body {
 			int Quantity = rs.getInt(2);
 			String IsMenuForMembership = rs.getString(3);
 			String StoreN = rs.getString(4);
+			menu_quan = Quantity;
 	%>
 			<h2><%=Mname %></h2>
 			<p id="menuInfoStore"><%=Quantity %></p>
