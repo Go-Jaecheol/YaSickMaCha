@@ -10,10 +10,10 @@ pageEncoding="UTF-8" import="java.text.*, java.sql.*"%>
 	<%
     	request.setCharacterEncoding("utf-8");
 		String serverIP = "localhost";
-		String strSID = "orcl";
+		String strSID = "orcl"; //ORCLCDB
 		String portNum = "1521";
-		String user = "db11";
-		String pass = "db11";
+		String user = "db11"; //lucifer
+		String pass = "db11";	//1234
 		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
 		String query;
 		int res, dno = 0;

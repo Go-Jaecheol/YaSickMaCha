@@ -10,10 +10,10 @@
 <body>
 	<%
 		String serverIP = "localhost";
-		String strSID = "orcl";
+		String strSID = "orcl"; //ORCLCDB
 		String portNum = "1521";
-		String user = "db11";
-		String pass = "db11";
+		String user = "db11"; //lucifer
+		String pass = "db11";	//1234
 		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
 		String query;
 		Connection conn=null;
@@ -71,7 +71,7 @@
 		}
 		else {
 			HttpSession session = request.getSession();
-			session.setAttribute("user_name", rs.getString(1)); //aid를 세션에 입력
+			session.setAttribute("Aid", rs.getString(1)); //Aid를 세션에 입력
 			rs.close();
 			pstmt.close();
 			conn.close();

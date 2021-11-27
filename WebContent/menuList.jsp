@@ -19,11 +19,24 @@
 		width: 90%;
     	margin: 5px auto;
 	}
+	
+	#formDiv {
+		float : left;
+	}
+	
+	#buttonDiv {
+		float : right;
+	}
 </style>
 <title>YSMC</title>
 </head>
 <body>
-	<%	
+	<%
+		String aid = (String)session.getAttribute("aid");
+		
+		HttpSession httpsessionForMenu = request.getSession();
+		httpsessionForMenu.setAttribute("aid", aid); //메뉴 관리시에 MANAGES 정보를 위함
+		
 		String serverIP = "localhost";
 		String strSID = "orcl"; //ORCLCDB
 		String portNum = "1521";
@@ -42,20 +55,24 @@
 	
 	<%@ include file="./adminNavbar.jsp" %>
 	<div id="controlBar">
-		<form action="studentList.jsp" method="post" accept-charset="utf-8">
-	      	<input name="input" type="text" />
-	      	<select name="section">
-		        <option value="sid" selected>학번</option>
-		        <option value="sname">이름</option>
-		        <option value="phone">핸드폰</option>
-	     	</select>
-	    	<button class="btn btn-primary" type="submit">검색</button>
-	  	</form>
+		<div id="formDiv">
+			<form action="menuList.jsp" method="post" accept-charset="utf-8">
+		      	<input name="input" type="text" />
+		      	<select name="section">
+			        <option value="mname" selected>메뉴이름</option>
+			        <option value="storeN">가게이름</option>
+			        <option value="seasonId">시즌</option>
+		     	</select>
+		    	<button class="btn btn-primary" type="submit">검색</button>
+	  		</form>
+		</div>
+	  	<div id="buttonDiv">
+	  		<button class="btn btn-primary" onclick="location.href = 'addMenu.jsp'">메뉴추가</button>
+	  	</div>
   	</div>
+  
 	<%
-		query = "select sid as 학번, pwd as 비밀번호, Sname as 이름, phone as 휴대전화, Membership as 학생회비납부여부, dname as 전공 "
-				+ "from student, DEPARTMENT "
-				+ "where dnumber=dno";
+		query = "select * from menu";
 	
 		String section="";
 		String input="";
@@ -66,33 +83,32 @@
 		if(section == null){
 			
 		}
-		else if(section.equals("sid")){
-			query = query + " and sid LIKE '%" + input + "%'";
+		else if(section.equals("mname")){
+			query = query + " where mname LIKE '%" + input + "%'";
 		}
-		else if(section.equals("sname")){
-			query = query + " and sname LIKE '%" + input + "%'";
+		else if(section.equals("storeN")){
+			query = query + " where storeN LIKE '%" + input + "%'";
 		}
-		else if(section.equals("phone")){
-			query = query + " and phone LIKE '%" + input + "%'";
+		else if(section.equals("seasonId")){
+			query = query + " where seasonId LIKE '%" + input + "%'";
 		}
-			
-		System.out.println(query);
 		
 		pstmt=conn.prepareStatement(query);	
 		rs=pstmt.executeQuery();
 		out.println("<table class='table table-striped'>");
-		ResultSetMetaData rsmd = rs.getMetaData();
-		int cnt = rsmd.getColumnCount();
 		out.println("<thead>");
-		for(int i=1; i<=cnt; i++){
-			out.println("<th>"+rsmd.getColumnName(i)+"</th>");
-		}
+		out.println("<th>메뉴id</th>");
+		out.println("<th>메뉴이름</th>");
+		out.println("<th>수량</th>");
+		out.println("<th>학생회비납부자용메뉴여부</th>");
+		out.println("<th>가게이름</th>");
+		out.println("<th>시즌</th>");
 		out.println("</thead>");
 		while(rs.next()){
 			out.println("<tr>");
 			out.println("<td>"+rs.getString(1)+"</td>");
-			out.println("<td>"+rs.getString(2)+"</td>");
-			out.println("<td><a href = 'studentDetail.jsp?sid=" +rs.getString(1)+ "'>"+ rs.getString(3) +"</a></td>");
+			out.println("<td><a href = 'editMenu.jsp?mid=" +rs.getString(1)+ "'>"+ rs.getString(2) +"</a></td>");
+			out.println("<td>"+rs.getString(3)+"</td>");
 			out.println("<td>"+rs.getString(4)+"</td>");
 			out.println("<td>"+rs.getString(5)+"</td>");
 			out.println("<td>"+rs.getString(6)+"</td>");
