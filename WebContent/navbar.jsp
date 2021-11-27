@@ -49,7 +49,7 @@
 	        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      		</div>
 				<div class="modal-body">
-	       			<p>정말 SIGN OUT하시겠습니까?</p>
+	       			<p>정말 SIGN OUT하시겠습니까?<N/p>
 	   			</div>	
 	   			<div class="modal-footer">
 			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
