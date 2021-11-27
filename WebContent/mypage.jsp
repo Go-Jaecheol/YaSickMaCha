@@ -10,36 +10,50 @@
 <script src="js/bootstrap.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="./css/global.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
-<script>
+<script type="text/javascript">
 	function toastShow(content, title) {
-		toastr.options = {
-		  "closeButton": false,
-		  "debug": false,
-		  "newestOnTop": false,
-		  "progressBar": true,
-		  "positionClass": "toast-bottom-right",
-		  "preventDuplicates": true,
-		  "onclick": null,
-		  "showDuration": "300",
-		  "hideDuration": "1000",
-		  "timeOut": "3000",
-		  "extendedTimeOut": "1000",
-		  "showEasing": "swing",
-		  "hideEasing": "linear",
-		  "showMethod": "fadeIn",
-		  "hideMethod": "fadeOut"
-		}
+		
 		toastr.info(content, title);
-	};	
+	};
+	function Valid(e) {
+		var sname = document.getElementById("newSname").value;
+		
+		if (sname.length > 7 || sname.indexOf(' ') >= 0) {
+			document.getElementById("newSnameHelp").style.display = 'flex';
+			document.getElementById("commitBtn").disabled = true;
+		}
+		else {
+			document.getElementById("newSnameHelp").style.display = 'none';
+			document.getElementById("commitBtn").disabled = false;
+		}	
+	}
+	function ValidRating(e) {
+		var rating = document.getElementById("floatingRating").value;
+		var comments = document.getElementById("floatingComments").value;
+		
+		if (rating > 5 || rating < 0) {
+			document.getElementById("ratingHelp").style.display = 'flex';
+			document.getElementById("reviewBtn").disabled = true;
+		}
+		else {
+			document.getElementById("ratingHelp").style.display = 'none';
+		}
+		if (comments.length > 75) {
+			document.getElementById("commentsHelp").style.display = 'flex';
+			document.getElementById("reviewBtn").disabled = true;
+		}
+		else {
+			document.getElementById("commentsHelp").style.display = 'none';
+		}
+		if (document.getElementById("ratingHelp").style.display != 'flex' && document.getElementById("commentsHelp").style.display != 'flex')
+			document.getElementById("reviewBtn").disabled = false;
+	}
 </script>  
 <style type="text/css">
-html {
-	height: 100%;
-}
 body {
-	margin: 0;
-	height: 100%;
 	text-align: center;
 }
 #mypagePaper {
@@ -58,6 +72,12 @@ h3 {
 }
 #nav-tabContent {
 	padding: 40px;
+}
+#commitBtn {
+	width: 150px;
+}
+#reviewBtn {
+	width: 150px;
 }
 #chBtn {
 	float: right;
@@ -85,8 +105,8 @@ h3 {
 	  			String pass = "db11";
 	  			String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
 	  			String query, sname=user_name;
-	  			String sid="", phone="", mem="", depart="", season="", storen="", mname="", isget="", comm="";
-	  			String[] attr = {"#", "야식마차", "가게 이름", "메뉴 이름", "수령 여부", "Review"};
+	  			String sid="", phone="", mem="", depart="", season="", storen="", mname="", mid="", isget="", comm="";
+	  			String[] attr = {"#", "야식마차", "가게 이름", "메뉴 이름", "수령 여부", "REVIEW"};
 	  			int cnt=1, rating=0;
 	  			Connection conn=null;
 	  			PreparedStatement pstmt;
@@ -108,25 +128,25 @@ h3 {
   				<% }
 	  			else {
 	  				String rtn = request.getParameter("isUp");
-	  				if (rtn != null && Integer.parseInt(rtn) >= 0)%> <script>toastShow("회원 정보가 수정되었습니다!", "알림");</script>
+	  				if (rtn != null && Integer.parseInt(rtn) >= 0)%> <script></script>
 	  				<% sid = rs.getString(1);
 	  				phone = rs.getString(2);
-	  				mem = (rs.getString(3).equals("N") ? "미제출" : "제출");
+	  				mem = (rs.getString(3).equals("N") ? "X" : "O");
 	  				int d = rs.getInt(4);
 	  				depart = (d == 1 ? "심컴" : "글솦");
 	  				out.println("<dl class=\"row\">");
-	  				out.println("<dt class=\"col-sm-4 text-center\">학번</dt>");
-	  				out.println("<dd class=\"col-sm-8 text-center\">" + sid + "</dd><br/>");
-	  				out.println("<dt class=\"col-sm-4 text-center\">이름</dt>");
-	  				out.println("<dd class=\"col-sm-8 text-center\">" + sname + "</dd>");
-	  				out.println("<dt class=\"col-sm-4 text-center\">휴대폰 번호</dt>");
-	  				out.println("<dd class=\"col-sm-8 text-center\">" + phone + "</dd>");
-	  				out.println("<dt class=\"col-sm-4 text-center\">학생회비 제출 여부</dt>");
-	  				out.println("<dd class=\"col-sm-8 text-center\">" + mem + "</dd>");
-	  				out.println("<dt class=\"col-sm-4 text-center\">학과</dt>");
-	  				out.println("<dd class=\"col-sm-8 text-center\">" + depart + "</dd>");
+	  				out.println("<dt class=\"col-sm-6 text-center\">학번</dt>");
+	  				out.println("<dd class=\"col-sm-6 text-center\">" + sid + "</dd><br/>");
+	  				out.println("<dt class=\"col-sm-6 text-center\">이름</dt>");
+	  				out.println("<dd class=\"col-sm-6 text-center\">" + sname + "</dd>");
+	  				out.println("<dt class=\"col-sm-6 text-center\">휴대폰 번호</dt>");
+	  				out.println("<dd class=\"col-sm-6 text-center\">" + phone + "</dd>");
+	  				out.println("<dt class=\"col-sm-6 text-center\">학생회비 납부 여부</dt>");
+	  				out.println("<dd class=\"col-sm-6 text-center\">" + mem + "</dd>");
+	  				out.println("<dt class=\"col-sm-6 text-center\">학과</dt>");
+	  				out.println("<dd class=\"col-sm-6 text-center\">" + depart + "</dd>");
 	  				out.println("</dl>");
-					out.println("<button type=\"button\" class=\"btn btn-outline-primary\" id=\"chBtn\" data-bs-toggle=\"modal\" data-bs-target=\"#MypageUpdateModal\">수정하기</button>");
+					out.println("<button type=\"button\" class=\"btn btn-outline-primary\" id=\"chBtn\" data-bs-toggle=\"modal\" data-bs-target=\"#MypageUpdateModal\">수정  <i class=\"fas fa-user-edit\"></i></button>");
 				} %>
   			</div>
 			<div class="tab-pane fade" id="nav-menu" role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -155,12 +175,15 @@ h3 {
 							season = rs.getString(1);
 							storen = rs.getString(2);
 							mname = rs.getString(3);
-							isget = (rs.getString(4).equals("N") ? "미수령" : "수령");
+							isget = (rs.getString(4).equals("N") ? "X" : "O");
 							out.println("<td class=\"text-center\">" + season + "</td>");
 							out.println("<td class=\"text-center\">" + storen + "</td>");
 							out.println("<td class=\"text-center\">" + mname + "</td>");
 							out.println("<td class=\"text-center\">" + isget + "</td>");
-							out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-primay\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\">Go!</button></td>");
+							if (isget.equals("X"))
+								out.println("<td class=\"text-center\" style=\"color: red\">작성 불가</td>");
+							else
+								out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn btn-primay\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\">Go!</button></td>");
 							out.println("</tr>");
 							cnt += 1;
 						} while(rs.next());
@@ -187,17 +210,18 @@ h3 {
 	        			out.println("</div>");
 	        			out.println("<div class=\"input-group mb-3\">");
 	        			out.println("<span class=\"input-group-text\" id=\"snameLabel\">이름(7글자 이내)</span>");
-	        			out.println("<input class=\"form-control\" name=\"sname\" type=\"text\" value=\"" + sname + "\" aria-describedby=\"snameLabel\" required>");
+	        			out.println("<input class=\"form-control\" id=\"newSname\" name=\"sname\" type=\"text\" value=\"" + sname + "\" aria-describedby=\"snameLabel\" oninput=\"Valid(this)\" required>");
+	        			out.println("<div id=\"newSnameHelp\" class=\"invalid-feedback\">7자 이내로 입력해주세요.</div>");
 	        			out.println("</div>");
 	        			out.println("<div class=\"input-group mb-3\">");
 	        			out.println("<span class=\"input-group-text\" id=\"phoneLabel\">휴대폰 번호</span>");
 	        			out.println("<input class=\"form-control\" type=\"text\" value=\"" + phone + "\" aria-describedby=\"phoneLabel\" readonly>");
 	        			out.println("</div>");
 	        			out.println("<div class=\"input-group mb-3\">");
-	        			out.println("<span class=\"input-group-text\" id=\"memLabel\">학생회비 제출 여부</span>");
+	        			out.println("<span class=\"input-group-text\" id=\"memLabel\">학생회비 납부 여부</span>");
 	        			out.println("<input class=\"form-control\" type=\"text\" value=\"" + mem + "\" aria-describedby=\"memLabel\" readonly>");
 	        			out.println("</div>");
-	        			out.println("<div class=\"input-group mb-3\">");
+	        			out.println("<div class=\"input-group mb-3\" style=\"justify-content: center;\">");
 	        			out.println("<div class=\"form-check form-check-inline\">");
 	        			out.println("<input class=\"form-check-input\" type=\"radio\" name=\"depart\" id=\"depart1\" value=\"심컴\" checked>");
 	        			out.println("<label class=\"form-check-label\" for=\"depart1\">심컴</label>");
@@ -206,7 +230,7 @@ h3 {
    	        			out.println("<input class=\"form-check-input\" type=\"radio\" name=\"depart\" id=\"depart2\" value=\"글솦\">");
    	        			out.println("<label class=\"form-check-label\" for=\"depart2\">글솦</label>");
    	        			out.println("</div>");
-	        			out.println("</div><br/>");
+	        			out.println("</div>");
 						out.println("<button class=\"btn btn-outline-primary form-control\" id=\"commitBtn\" type=\"submit\">수정 완료</button>");
 						out.println("</form>");
 		  			%>
@@ -224,31 +248,39 @@ h3 {
 		      		</div>
 					<div class="modal-body">
 	        		<%
-		        		query = "SELECT r.Rating, r.Comments "
+		        		query = "SELECT m.Mid, r.Rating, r.Comments "
 								+ "FROM SMENU_LIST s, MENU m, Rating r " 
-								+ "WHERE s.Sid = ? AND m.Mid = r.MenuId AND s.Mid = m.Mid AND s.Sid = r.StudentId";
+								+ "WHERE s.Sid = ? AND m.Mid = r.MenuId AND s.Mid = m.Mid AND s.Sid = r.StudentId AND s.IsGet = 'Y'";
 						pstmt=conn.prepareStatement(query);
 						pstmt.setString(1, sid);
 						rs = pstmt.executeQuery();
+						// 남긴 후기가 있는 경우, 그 후기를 보여주고 그렇지 않은 경우 후기 작성 form
 						if (!rs.next()) {
-							// 남긴 후기가 있는 경우, 그 후기를 보여주고 그렇지 않은 경우 후기 작성 form
 							out.println("<form action=\"ratingInsert.jsp\" method=\"POST\">");
-							out.println("<h3>" + mname + "리뷰 작성하기</h3>");
+							out.println("<h3>리뷰 작성하기</h3>");
 							out.println("<div class=\"form-floating mb-3\">");
-							out.println("<input type=\"number\" id=\"floatingRating\" class=\"form-control\" name=\"rating\" value=5 max=5 min=0 required>");
+							out.println("<input type=\"text\" id=\"floatingMname\" class=\"form-control\" name=\"mname\" value=\"" + mname + "\" readonly>");
+							out.println("<label for=\"floatingMname\">메뉴 이름</label>");
+							out.println("</div>");
+							out.println("<div class=\"form-floating mb-3\">");
+							out.println("<input type=\"number\" id=\"floatingRating\" class=\"form-control\" name=\"rating\" value=5 max=5 min=0 oninput=\"ValidRating(this)\" required>");
 							out.println("<label for=\"floatingRating\">별점</label>");
+							out.println("<div id=\"ratingHelp\" class=\"invalid-feedback\">0 ~ 5 사이의 1점 단위로 작성해주세요.</div>");
 							out.println("</div>");
 							out.println("<div class=\"form-floating mb-3\">");
-							out.println("<textarea id=\"floatingComments\" class=\"form-control\" name=\"comments\" style=\"height: 100px\"></textarea>");
+							out.println("<textarea id=\"floatingComments\" class=\"form-control\" name=\"comments\" oninput=\"ValidRating(this)\" style=\"height: 100px\"></textarea>");
 							out.println("<label for=\"floatingComments\">후기</label>");
+							out.println("<div id=\"commentsHelp\" class=\"invalid-feedback\">75자 이내로 작성해주세요.</div>");
 							out.println("</div>");
-							out.println("<button type=\"button\" class=\"btn btn-outline-primary form-control\" id=\"ratingBtn\" type=\"submit\">작성 완료</button>");
+							out.println("<button class=\"btn btn-outline-primary form-control\" id=\"reviewBtn\" type=\"submit\">작성 완료</button>");
 							out.println("</form>");
+							out.println("</div>");
 		      			}
 						else {
 							out.println("<h3>" + mname + "에 대한 리뷰</h3>");
-							rating = rs.getInt(1);
-							comm = rs.getString(2);
+							mid = rs.getString(1);
+							rating = rs.getInt(2);
+							comm = rs.getString(3);
 							out.println("<h4>별점</h4>");
 							String innerHtml="";
 							for(int i=0; i<5; i++) {  
@@ -258,14 +290,18 @@ h3 {
 							out.println(innerHtml);
 							out.println("<h4>남긴 후기</h4>");
 							out.println(comm);
+							out.println("</div>");
+							out.println("<div class=\"modal-footer\">");
+							out.println("<button type=\"button\" class=\"btn btn-danger\" onclick=\"location.href='ratingDelete.jsp?mid=" + mid + "'\">삭제하기</button>");
+							out.println("</div>");
 						}
 		  				rs.close();
 		  				pstmt.close();
 		  				conn.close();
 		  			%>
-	      			</div>
-	    		</div>
-		  	</div>
+    				</div>
+		  		</div>
+			</div>
 		</div>
 	</div>
 </body>

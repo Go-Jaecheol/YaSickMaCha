@@ -9,6 +9,7 @@
 </head>
 <body>
 	<%
+		request.setCharacterEncoding("utf-8");
 		String serverIP = "localhost";
 		String strSID = "orcl"; //ORCLCDB
 		String portNum = "1521";
@@ -45,7 +46,8 @@
 				if (!rs.next()) { %>
 					<script>
 						alert("아이디나 비밀번호가 틀렸습니다.");
-						response.sendRedirect("main.jsp");
+						document.location.href = "index.jsp";
+						// response.sendRedirect("index.jsp");
 					</script>
 				<% }
 				else {

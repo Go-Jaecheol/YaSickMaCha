@@ -9,11 +9,69 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="./css/global.css">
 <script type="text/javascript">
+	function ValidIn(e) {
+		var sid = document.getElementById("floatingSid").value;
+		var pwd = document.getElementById("floatingPwd").value;
+		
+		if (sid.length > 10 || sid.indexOf(' ') >= 0) {
+			document.getElementById("sidHelp").style.display = 'flex';
+			document.getElementById("InBtn").disabled = true;
+		}
+		else {
+			document.getElementById("sidHelp").style.display = 'none';	
+		}
+		if (pwd.length > 5 || pwd.indexOf(' ') >= 0) {
+			document.getElementById("pwdHelp").style.display = 'flex';
+			document.getElementById("InBtn").disabled = true;	
+		}
+		else {
+			document.getElementById("pwdHelp").style.display = 'none';		
+		}
+		if (document.getElementById("sidHelp").style.display != 'flex' && document.getElementById("pwdHelp").style.display != 'flex')
+			document.getElementById("InBtn").disabled = false;	
+	}
+	function ValidUp(e) {
+		var sid = document.getElementById("floatingUpSid").value;
+		var pwd = document.getElementById("floatingUpPwd").value;
+		var sname = document.getElementById("floatingUpSname").value;
+		var phone = document.getElementById("floatingUpPhone").value;
+		var dept = document.getElementById("floatingUpDept").value;
+		
+		if (sid.length > 10 || sid.indexOf(' ') >= 0) {
+			document.getElementById("sidUpHelp").style.display = 'flex';
+			document.getElementById("UpBtn").disabled = true;
+		}	
+		else document.getElementById("sidUpHelp").style.display = 'none';
+		if(pwd.length > 5 || pwd.indexOf(' ') >= 0) {
+			document.getElementById("pwdUpHelp").style.display = 'flex';
+			document.getElementById("UpBtn").disabled = true;	
+		}
+		else document.getElementById("pwdUpHelp").style.display = 'none';
+		if(sname.length > 7 || sname.indexOf(' ') >= 0) {
+			document.getElementById("snameUpHelp").style.display = 'flex';
+			document.getElementById("UpBtn").disabled = true;	
+		}
+		else document.getElementById("snameUpHelp").style.display = 'none';
+		if(phone.length > 11 || phone.indexOf(' ') >= 0 || phone.indexOf("010") == -1) {
+			document.getElementById("phoneUpHelp").style.display = 'flex';
+			document.getElementById("UpBtn").disabled = true;	
+		}
+		else document.getElementById("phoneUpHelp").style.display = 'none';
+		if(dept.length > 2 || dept.indexOf(' ') >= 0 || (dept != "심컴" && dept != "글솦")) {
+			document.getElementById("dnoUpHelp").style.display = 'flex';
+			document.getElementById("UpBtn").disabled = true;	
+		}
+		else document.getElementById("dnoUpHelp").style.display = 'none';
+		if (document.getElementById("sidUpHelp").style.display != 'flex' && document.getElementById("pwdUpHelp").style.display != 'flex' && document.getElementById("snameUpHelp").style.display != 'flex' && document.getElementById("phoneUpHelp").style.display != 'flex' && document.getElementById("dnoUpHelp").style.display != 'flex') {
+			document.getElementById("UpBtn").disabled = false;	
+		}
+	}
     function toggle() {
     	this.state = !this.state;
-    	this.innerHTML = this.state ? 'SIGN IN' : 'SIGN UP';
+    	this.innerHTML = this.state ? '이미 계정이 있어요' : '계정이 없어요';
     	if (this.state) {
     		document.getElementById("signIn").style.display = 'none';
     		document.getElementById("signUp").style.display = 'block';
@@ -37,65 +95,107 @@ img {
 	margin-top: 30px;
 	padding: 0 30px 20px 30px;
 	border-radius: 10px;
-	box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
+	box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6),
+      -9px -9px 16px rgba(255, 255, 255, 0.5),
+       inset 3px 3px 7px rgba(136, 165, 191, 0.48), 
+      inset -3px -3px 7px #FFFFFF;
+    background: linear-gradient(318.32deg, rgba(163, 177, 198, 0.1) 0%, rgba(163, 177, 198, 0.1) 55%, rgba(163, 177, 198, 0.25) 100%);
 }
 h3 {
 	position: relative;
 	padding: 20px;
+	font-weight: 600;
+}
+#InBtn, #UpBtn {
+	width: 150px;
+	margin: auto;
+    background: #efefef;
+ 	border: none;
+  	border-radius: .5rem;
+  	color: #444;
+  	font-size: 1rem;
+ 	font-weight: 700;
+  	letter-spacing: .2rem;
+  	outline: none;
+  	transition: .2s ease-in-out;
+  	box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
+              -6px -6px 10px rgba(255, 255, 255, .5),
+              6px 6px 8px rgba(255, 255, 255, .075),
+              6px 6px 10px rgba(0, 0, 0, .15);olor 0.2s ease-out, transform 0.2s ease-out;
+}
+#InBtn:hover, #UpBtn:hover {
+	box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+              -2px -2px 4px rgba(255, 255, 255, .4),
+              2px 2px 2px rgba(255, 255, 255, .05),
+              2px 2px 4px rgba(0, 0, 0, .1);
 }
 #signUp {
 	display: none;
+}
+#SwitchBtn {
+	text-decoration: none;
+	color: green;
+}
+#SwitchBtn:hover {
+	text-decoration: underline;
 }
 </style>
 <title>YSMC</title>
 </head>
 <body>
-	<img src="./image/main.png" width="40%">
+	<img src="./image/main.png" height="30%">
 	<div id="signForm" class="container">
-		<div id="signIn">
+		<div id="signIn" class="fadein">
 			<form action="signIn.jsp" method="POST">
 				<h3>SIGN IN</h3>
 				<div class="form-floating mb-3">
-					<input type="text" id="floatingSid" class="form-control" name="sid" placeholder="학번" required>
+					<input type="text" id="floatingSid" class="form-control" name="sid" placeholder="학번" oninput="ValidIn(this)" required autofocus>
 					<label for="floatingSid">학번</label>
+					<div id="sidHelp" class="invalid-feedback">10자 이내로 입력해주세요.</div>
 				</div>
 				<div class="form-floating">
-					<input type="password" id="floatingPwd" class="form-control" name="pwd" placeholder="비밀번호" required>
+					<input type="password" id="floatingPwd" class="form-control" name="pwd" placeholder="비밀번호" oninput="ValidIn(this)" required>
 					<label for="floatingPwd">비밀번호</label>
+					<div id="pwdHelp" class="invalid-feedback">5자 이내로 입력해주세요.</div>
 				</div>
 				<br/>
-				<button class="btn btn-outline-primary btn-lg form-control" type="submit">Sign in</button>
+				<button class="btn-lg form-control" id="InBtn" type="submit">SIGN IN</button>
 			</form>
 		</div>
 		<div id="signUp">
 			<form action="signUp.jsp" method="POST">
 				<h3>SIGN UP</h3>
 				<div class="form-floating mb-3">
-					<input type="text" id="floatingUpSid" class="form-control" name="sid" placeholder="학번" required>
+					<input type="text" id="floatingUpSid" class="form-control" name="sid" placeholder="학번" oninput="ValidUp(this)" required autofocus>
 					<label for="floatingUpSid">학번</label>
+					<div id="sidUpHelp" class="invalid-feedback">10자 이내로 입력해주세요.</div>
 				</div>
 				<div class="form-floating mb-3">
-					<input type="password" id="floatingUpPwd" class="form-control" name="pwd" placeholder="비밀번호" required>
+					<input type="password" id="floatingUpPwd" class="form-control" name="pwd" placeholder="비밀번호" oninput="ValidUp(this)" required>
 					<label for="floatingUpPwd">비밀번호</label>
+					<div id="pwdUpHelp" class="invalid-feedback">5자 이내로 입력해주세요.</div>
 				</div>
 				<div class="form-floating mb-3">
-					<input type="text" id="floatingName" class="form-control" name="sname" placeholder="이름" required>
-					<label for="floatingName">이름</label>
+					<input type="text" id="floatingUpSname" class="form-control" name="sname" placeholder="이름" oninput="ValidUp(this)" required>
+					<label for="floatingUpSname">이름</label>
+					<div id="snameUpHelp" class="invalid-feedback">7자 이내로 입력해주세요.</div>
 				</div>
 				<div class="form-floating mb-3">
-					<input type="text" id="floatingPhone" class="form-control" name="phone" placeholder="휴대폰 번호(ex: 010xxxxxxxx)" required>
-					<label for="floatingPhone">휴대폰 번호(ex: 010xxxxxxxx)</label>
+					<input type="text" id="floatingUpPhone" class="form-control" name="phone" placeholder="휴대폰 번호(ex: 010xxxxxxxx)" oninput="ValidUp(this)" required>
+					<label for="floatingUpPhone">휴대폰 번호(ex: 010xxxxxxxx)</label>
+					<div id="phoneUpHelp" class="invalid-feedback">형식에 맞게 입력해주세요.</div>
 				</div>
 				<div class="form-floating">
-					<input type="text" id="floatingDept" class="form-control" name="dno" placeholder="전공(ex: 심컴, 글솦)" required>
-					<label for="floatingDept">전공(ex: 심컴, 글솦)</label>
+					<input type="text" id="floatingUpDept" class="form-control" name="dno" placeholder="전공(ex: 심컴, 글솦)" oninput="ValidUp(this)" required>
+					<label for="floatingUpDept">전공(ex: 심컴, 글솦)</label>
+					<div id="dnoUpHelp" class="invalid-feedback">형식에 맞게 입력해주세요.</div>
 				</div>
 				<br/>
-                <button class="btn btn-outline-primary btn-lg form-control" type="submit">Sign up</button>
+                <button class="btn btn-lg form-control" id="UpBtn" type="submit">SIGN UP</button>
 			</form>
 		</div>
 		<br/>
-		<button type="button" class="btn btn-primary" data-bs-toggle="button" id="SwitchBtn" onclick="toggle.call(this)">SIGN UP</button>
+		<a href="#" data-bs-toggle="button" id="SwitchBtn" onclick="toggle.call(this)">계정이 없어요</a>
 	</div>
 </body>
 </html>
