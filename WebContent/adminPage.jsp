@@ -32,20 +32,86 @@
 
 	<%
 		String serverIP = "localhost";
-		String strSID = "ORCLCDB";
+		String strSID = "orcl"; //ORCLCDB
 		String portNum = "1521";
-		String user = "lucifer";
-		String pass = "1234";
+		String user = "db11"; //lucifer
+		String pass = "db11";	//1234
 		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
 		
 		
 		String query="";
+		String finalQuery="";
 		Connection conn = null;
 		PreparedStatement pstmt;
 		ResultSet rs;
 		
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		conn=DriverManager.getConnection(url, user, pass);
+	%>
+	
+	<%
+		query = "SELECT * from season order by seasonid";
+		pstmt=conn.prepareStatement(query);	
+		rs=pstmt.executeQuery();
+		
+		String seasonId = "";
+		
+		while(rs.next()){
+			seasonId = rs.getString(1);
+			System.out.println(seasonId);
+		}
+		
+		seasonId = seasonId.substring(0,5);
+		System.out.println(seasonId);
+		
+		query = "select * from season where seasonid like '"+seasonId+"%'";
+		pstmt=conn.prepareStatement(query);	
+		rs=pstmt.executeQuery();
+		
+		int count = 0;
+		
+		while(rs.next()){
+			count++;
+			if(count == 1)
+				seasonId = rs.getString(1);
+			else
+				seasonId = seasonId.substring(0,5)+'F';
+		}
+	
+		finalQuery = "select s.sid as 학번, s.sname as 이름, s.phone as 휴대전화, m.mid as 메뉴번호, m.mname as 메뉴, l.isget as 수령여부, m.IsMenuForMembership as 멤버십 "
+				+ "from student s, menu m, SMENU_LIST l "
+				+ "where s.sid = l.sid and l.mid = m.mid and m.SeasonId = '"+seasonId+"'";
+	
+		String section="";
+		String input="";
+		String mid="";
+		
+		input = request.getParameter("input");
+		section = request.getParameter("section");
+		mid = request.getParameter("mid");
+		
+		System.out.println(input);
+		System.out.println(section);
+		System.out.println(mid);
+		
+		if(section == null){
+			
+		}
+		else if(section.equals("sid")){
+			finalQuery = finalQuery + " and s.sid LIKE '%" + input + "%'";
+		}
+		else if(section.equals("sname")){
+			finalQuery = finalQuery + " and s.sname LIKE '%" + input + "%'";
+		}
+		else if(section.equals("phone")){
+			finalQuery = finalQuery + " and s.phone LIKE '%" + input + "%'";
+		}
+		
+		if(mid != null){
+			finalQuery = finalQuery + " and l.mid ='" + mid + "'";
+		}
+		
+		System.out.println(finalQuery);
 	%>
 	
 	<%@ include file="./adminNavbar.jsp" %>
@@ -58,67 +124,33 @@
 		        <option value="sname">이름</option>
 		        <option value="phone">핸드폰</option>
 	     	</select>
-	    	<button class="btn btn-primary" type="submit">검색</button>
-	  	</form>
+	    	
   
-	<%
-		query = "select * from season";
-		pstmt=conn.prepareStatement(query);	
-		rs=pstmt.executeQuery();
-		rs.next();
-		System.out.println(rs.getString(1));
-		String seasonId = rs.getString(1);
-		
-		query = "select mname, quantity from menu where seasonid = '"+seasonId+"'";
+	<%	
+		query = "select mid, mname from menu where seasonid = '"+seasonId+"'";
 		pstmt=conn.prepareStatement(query);	
 		rs=pstmt.executeQuery();
 		
-		out.println("<table class='table transpose'>");
-		ResultSetMetaData rsmd = rs.getMetaData();
-		int cnt = rsmd.getColumnCount();
-		for(int i=1; i<=cnt; i++){
-			out.println("<th>"+rsmd.getColumnName(i)+"</th>");
-		}
-		
+		out.println("<form action='adminPage.jsp' method='post' naccept-charset='utf-8'>");
+		out.println("<select name='mid'>");
 		while(rs.next()){
-			out.println("<tr>");
-			out.println("<th>"+rs.getString(1)+"</th>");		
-			out.println("<td>"+rs.getString(2)+"</td>");
-			out.println("</tr>");
+			if(rs.getString(1).equals(mid)){
+				out.println("<option value='"+rs.getString(1)+"' selected>"+rs.getString(2)+"</option>");
+			}
+			out.println("<option value='"+rs.getString(1)+"'>"+rs.getString(2)+"</option>");
 		}
-		out.println("</table>");
+		out.println("</select>");
+		out.println("<button class='btn btn-primary' type='submit'>확인</button>");
+		out.println("</form>");
 	%>
 	</div>
-	<%
-		query = "select s.sid as 학번, s.sname as 이름, s.phone as 휴대전화, m.mid as 메뉴번호, m.mname as 메뉴, l.isget as 수령여부, m.IsMenuForMembership as 멤버십 "
-				+ "from student s, menu m, SMENU_LIST l "
-				+ "where s.sid = l.sid and l.mid = m.mid and m.SeasonId = '"+seasonId+"'";
 	
-		String section="";
-		String input="";
-		
-		input = request.getParameter("input");
-		section = request.getParameter("section");
-		
-		if(section == null){		
-		}
-		else if(section.equals("sid")){
-			query = query + " and s.sid LIKE '%" + input + "%'";
-		}
-		else if(section.equals("sname")){
-			query = query + " and s.sname LIKE '%" + input + "%'";
-		}
-		else if(section.equals("phone")){
-			query = query + " and s.phone LIKE '%" + input + "%'";
-		}
-			
-		System.out.println(query);
-		
-		pstmt=conn.prepareStatement(query);	
+	<%
+		pstmt=conn.prepareStatement(finalQuery);	
 		rs=pstmt.executeQuery();
 		out.println("<table class='table table-striped'>");
-		rsmd = rs.getMetaData();
-		cnt = rsmd.getColumnCount();
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int cnt = rsmd.getColumnCount();
 		out.println("<thead>");
 		for(int i=1; i<cnt; i++){
 			out.println("<th>"+rsmd.getColumnName(i)+"</th>");

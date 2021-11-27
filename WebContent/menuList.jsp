@@ -4,7 +4,7 @@
 <%
     // 인코딩
     request.setCharacterEncoding("utf-8");
-%>    
+%>
 <!DOCTYPE html>
 <html>
 
@@ -32,10 +32,9 @@
 </head>
 <body>
 	<%
+		HttpSession session = request.getSession();
 		String aid = (String)session.getAttribute("aid");
-		
-		HttpSession httpsessionForMenu = request.getSession();
-		httpsessionForMenu.setAttribute("aid", aid); //메뉴 관리시에 MANAGES 정보를 위함
+		session.setAttribute("aid", aid); //메뉴 관리시에 MANAGES 정보를 위함
 		
 		String serverIP = "localhost";
 		String strSID = "orcl"; //ORCLCDB
@@ -93,11 +92,11 @@
 			query = query + " where seasonId LIKE '%" + input + "%'";
 		}
 		
+		query += " order by seasonId";
 		pstmt=conn.prepareStatement(query);	
 		rs=pstmt.executeQuery();
 		out.println("<table class='table table-striped'>");
 		out.println("<thead>");
-		out.println("<th>메뉴id</th>");
 		out.println("<th>메뉴이름</th>");
 		out.println("<th>수량</th>");
 		out.println("<th>학생회비납부자용메뉴여부</th>");
@@ -106,7 +105,6 @@
 		out.println("</thead>");
 		while(rs.next()){
 			out.println("<tr>");
-			out.println("<td>"+rs.getString(1)+"</td>");
 			out.println("<td><a href = 'editMenu.jsp?mid=" +rs.getString(1)+ "'>"+ rs.getString(2) +"</a></td>");
 			out.println("<td>"+rs.getString(3)+"</td>");
 			out.println("<td>"+rs.getString(4)+"</td>");

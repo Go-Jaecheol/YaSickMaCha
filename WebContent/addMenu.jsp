@@ -38,7 +38,7 @@
 	
 	<%@ include file="./adminNavbar.jsp" %>
 	<div id="form" class="container">
-		<form action="adminPage.jsp" method="post" naccept-charset="utf-8">
+		<form action="updateMenu.jsp" method="post" naccept-charset="utf-8">
 	      	<h3>메뉴 추가</h3>
 	      	<div class="form-floating mb-3">
 	      		<input type="text" id="floatingMname" class="form-control" name="mname" placeholder="메뉴이름" required>
@@ -54,15 +54,15 @@
 	      	</div>
 	      	<hr>
 	      	<div class="form-floating mb-3">
-	      		<input type="text" id="floatingStoreName" class="form-control" name="storeName" placeholder="가게이름" required>
+	      		<input type="text" id="floatingStoreName" class="form-control" name="storeN" placeholder="가게이름" required>
 				<label for="floatingStoreName">가게이름</label>
 	      	</div>
 	      	<div class="form-floating mb-3">
-	      		<input type="text" id="floatingStoreAddress" class="form-control" name="storeAddress" placeholder="가게주소">
+	      		<input type="text" id="floatingStoreAddress" class="form-control" name="Address" placeholder="가게주소">
 				<label for="floatingStoreAddress">가게주소</label>
 	      	</div>
 	      	<div class="form-floating mb-3">
-	      		<input type="text" id="floatinStorePhone" class="form-control" name="storePhone" placeholder="가게번호">
+	      		<input type="text" id="floatinStorePhone" class="form-control" name="Phone" placeholder="가게번호">
 				<label for="floatinStorePhone">가게번호</label>
 	      	</div>
 	      	<hr>

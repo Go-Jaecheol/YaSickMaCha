@@ -36,16 +36,17 @@
 </head>
 <body>
 	<%
+		HttpSession session = request.getSession();
 		String mid = request.getParameter("mid");
 		String aid = (String)session.getAttribute("aid");
 		System.out.println(aid);
 		System.out.println(mid);
 		
 		String serverIP = "localhost";
-		String strSID = "ORCLCDB";
+		String strSID = "orcl"; //ORCLCDB
 		String portNum = "1521";
-		String user = "lucifer";
-		String pass = "1234";
+		String user = "db11"; //lucifer
+		String pass = "db11";	//1234
 		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
 		
 		

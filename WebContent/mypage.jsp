@@ -79,10 +79,10 @@ h3 {
   			<div class="tab-pane fade show active" id="nav-info" role="tabpanel" aria-labelledby="nav-home-tab">
   			<%
 	  			String serverIP = "localhost";
-	  			String strSID = "orcl";
+	  			String strSID = "orcl"; //ORCLCDB
 	  			String portNum = "1521";
-	  			String user = "db11";
-	  			String pass = "db11";
+	  			String user = "db11"; //lucifer
+	  			String pass = "db11";	//1234
 	  			String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
 	  			String query, sname=user_name;
 	  			String sid="", phone="", mem="", depart="", season="", storen="", mname="", isget="", comm="";
