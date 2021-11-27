@@ -29,7 +29,7 @@
     %>
 	<nav class="navbar navbar-light bg-light">
 		<div class="container-fluid">
-			<a class="navbar-brand" style="display: contents;" href="./main.jsp"><img src="./image/logo.png" width="9%"></a>
+			<a class="navbar-brand" style="display: contents;" href="./main.jsp"><img src="./image/logo.png" class="img-fluid" width="9%"></a>
 			<ul class="nav nav-pills nav-fill justify-content-end" id="navTabs">
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="tab" href="./mypage.jsp"><%=user_name %>의 마이페이지</a>

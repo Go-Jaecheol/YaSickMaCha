@@ -50,9 +50,9 @@
 				<% }
 				else {
 					session.setAttribute("user_name", rs.getString(3)); //sname을 세션에 입력
-					rs.close();
-					pstmt.close();
-					conn.close();
+					//rs.close();
+					//pstmt.close();
+					//conn.close();
 					response.sendRedirect("main.jsp");
 				}	
 			}

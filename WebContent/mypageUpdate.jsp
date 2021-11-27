@@ -14,7 +14,7 @@
 		HttpSession session = request.getSession();
 		Object getdata = session.getAttribute("user_name");
 		String user_name = (String)getdata;
-		if (user_name == null) response.sendRedirect("./index.html");
+		if (user_name == null) response.sendRedirect("index.jsp");
 		
 		String serverIP = "localhost";
 		String strSID = "orcl";
