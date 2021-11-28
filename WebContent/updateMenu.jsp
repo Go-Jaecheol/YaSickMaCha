@@ -67,6 +67,9 @@
 		String seasonId = request.getParameter("seasonId");
 		System.out.println(seasonId);
 		
+		String aid = (String)session.getAttribute("aid");
+		System.out.println(aid);
+		
 		//deal with STORE table 
 		query = "select * from store where storeName = '"+storeN+"'";
 		pstmt=conn.prepareStatement(query);	
@@ -144,7 +147,20 @@
 				System.out.println(query);
 				System.out.println("insert menu failed");
 			}
-			
+			//insert MANAGES record
+			try {
+				query = "INSERT INTO MANAGES VALUES('"+aid+"', '"+mid+"')";
+				pstmt=conn.prepareStatement(query);
+				cnt = pstmt.executeUpdate();
+				System.out.println(query);
+				conn.commit();
+				System.out.println("insert manages success");
+			} catch(Exception e){
+				e.printStackTrace();
+				conn.rollback(); // if faild, rollback
+				System.out.println(query);
+				System.out.println("insert manages failed");
+			}
 		}
 		else {
 			try{

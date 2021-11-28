@@ -35,7 +35,12 @@
 <title>YSMC</title>
 </head>
 <body>
-	
+	<%
+		HttpSession session = request.getSession();
+		String aid = (String)session.getAttribute("aid");
+		session.setAttribute("aid", aid); //메뉴 관리시에 MANAGES 정보를 위함
+		System.out.println(aid);
+	%>
 	<%@ include file="./adminNavbar.jsp" %>
 	<div id="form" class="container">
 		<form action="updateMenu.jsp" method="post" naccept-charset="utf-8">
