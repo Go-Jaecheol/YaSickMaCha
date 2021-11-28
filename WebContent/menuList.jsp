@@ -16,6 +16,29 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <script src="js/bootstrap.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#EditMenuModal").on("show.bs.modal", function(e) {
+        	var mid = $(e.relatedTarget).data('mid');
+        	var mname = $(e.relatedTarget).data('mname');
+            var quan = $(e.relatedTarget).data('quan');
+            var mem = $(e.relatedTarget).data('mem');
+            var store = $(e.relatedTarget).data('store');
+            var addr = $(e.relatedTarget).data('addr');
+            var phone = $(e.relatedTarget).data('phone');
+            var season = $(e.relatedTarget).data('season');
+            
+            $('input[name=mid]').attr('value',mid);
+            $('input[name=mname]').attr('value',mname);
+            $('input[name=quantity]').attr('value',quan);
+            $('input[name=isMenuForMembership]').attr('value',mem);
+            $('input[name=storeN]').attr('value',store);
+            $('input[name=Address]').attr('value',addr);
+            $('input[name=Phone]').attr('value',phone);
+            $('input[name=seasonId]').attr('value',season);
+        });
+    });
+</script>
 <style type="text/css">
 	#controlBar {
 		width: 90%;
@@ -121,14 +144,33 @@
 		out.println("<th class=\"text-center\">학생회비 납부자용 메뉴 여부</th>");
 		out.println("<th class=\"text-center\">가게 이름</th>");
 		out.println("<th class=\"text-center\">시즌</th>");
+		out.println("<th class=\"text-center\">수정</th>");
 		out.println("</thead>");
 		while(rs.next()){
+			String mid = rs.getString(1);
+			query = "select m.mname, m.Quantity, m.IsMenuForMembership, m.StoreN, s.Address, s.Phone, m.seasonid "
+					+ "from menu m , store s, season se "
+					+ "where StoreN = StoreName and m.SeasonId = se.SeasonId and mid = '"+mid+"'";
+			System.out.println(query);
+			pstmt=conn.prepareStatement(query);	
+			ResultSet rs_temp=pstmt.executeQuery();
+			rs_temp.next();
+			
+			String mname = rs_temp.getString(1);
+			int quan = rs_temp.getInt(2);
+			String membership = rs_temp.getString(3);
+			String storeN = rs_temp.getString(4);
+			String addr = rs_temp.getString(5);
+			String phone = rs_temp.getString(6);
+			String seasonId = rs_temp.getString(7);
+			
 			out.println("<tr>");
-			out.println("<td class=\"text-center\"><a href = 'editMenu.jsp?mid=" +rs.getString(1)+ "'>"+ rs.getString(2) +"</a></td>");
-			out.println("<td class=\"text-center\">"+rs.getString(3)+"</td>");
-			out.println("<td class=\"text-center\">"+(rs.getString(4).equals("N") ? "X" : "O")+"</td>");
-			out.println("<td class=\"text-center\">"+rs.getString(5)+"</td>");
-			out.println("<td class=\"text-center\">"+rs.getString(6)+"</td>");
+			out.println("<th class=\"text-center\">"+ mname +"</th>");
+			out.println("<td class=\"text-center\">"+quan+"</td>");
+			out.println("<td class=\"text-center\">"+(membership.equals("N") ? "X" : "O")+"</td>");
+			out.println("<td class=\"text-center\">"+storeN+"</td>");
+			out.println("<td class=\"text-center\">"+seasonId+"</td>");
+			out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn updateInfoBtn\" data-bs-toggle=\"modal\" data-bs-target=\"#EditMenuModal\" data-mid=\""+mid+"\" data-mname=\""+mname+"\" data-quan=\""+quan+"\" data-mem=\""+membership+"\" data-store=\""+storeN+"\" data-season=\""+seasonId+"\" data-addr=\""+addr+"\" data-phone=\""+phone+"\"><i class=\"fas fa-share\"></i></button></td>");
 			out.println("</tr>");
 		}
 		out.println("</table>");
@@ -188,6 +230,53 @@
       			</div>
     		</div>
 	  	</div>
+	</div>
+	<!-- Menu Request Modal -->
+	<div class="modal fade" id="EditMenuModal" tabindex="-1" aria-labelledby="EditMenuModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+	  		<div class="modal-content">
+	      		<div class="modal-header">
+	        		<h5 class="modal-title" id="EditMenuModalLabel">메뉴 수정</h5>
+	        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      		</div>
+				<div class="modal-body text-center">
+					<form action="updateMenu.jsp" method="POST" accept-charset="utf-8">
+						<input type="hidden" id="floatingMid" class="form-control" name="mid" value="">
+				      	<div class="form-floating mb-3">
+				      		<input type="text" id="floatingMname" class="form-control" name="mname" placeholder="메뉴이름"	 value="" required>
+							<label for="floatingMname">메뉴이름</label>
+				      	</div>
+				      	<div class="form-floating mb-3">
+				      		<input type="number" id="floatingQuantity" class="form-control" name="quantity" placeholder="수량" value="" required>
+							<label for="floatingQuantity">수량</label>
+				      	</div>
+				      	<div class="form-floating mb-3">
+				      		<input type="text" id="floatingIsMenuForMembership" class="form-control" name="isMenuForMembership" placeholder="학생회비납부자용메뉴여부" value="" required>
+							<label for="floatingIsMenuForMembership">학생회비납부자용메뉴여부</label>
+				      	</div>
+				      	<hr>
+				      	<div class="form-floating mb-3">
+				      		<input type="text" id="floatingStoreName" class="form-control" name="storeN" placeholder="가게이름" value="" required>
+							<label for="floatingStoreName">가게이름</label>
+				      	</div>
+				      	<div class="form-floating mb-3">
+				      		<input type="text" id="floatingStoreAddress" class="form-control" name="Address" value="" placeholder="가게주소">
+							<label for="floatingStoreAddress">가게주소</label>
+				      	</div>
+				      	<div class="form-floating mb-3">
+				      		<input type="text" id="floatinStorePhone" class="form-control" name="Phone" value="" placeholder="가게번호">
+							<label for="floatinStorePhone">가게번호</label>
+				      	</div>
+				      	<hr>
+				      	<div class="form-floating mb-3">
+				      		<input type="text" id="floatinSeasonId" class="form-control" name="seasonId" value="" placeholder="시즌">
+							<label for="floatinSeasonId">시즌</label>
+				      	</div>
+				    	<button class="btn form-control formSubmitBtns" type="submit">확인</button>
+				  	</form>
+				</div>
+			</div>
+  		</div>
 	</div>
 </body>
 </html>
