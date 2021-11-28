@@ -140,13 +140,13 @@
 		pstmt=conn.prepareStatement(query);	
 		rs=pstmt.executeQuery();
 		
-		out.println("<form action='adminPage.jsp' method='post' naccept-charset='utf-8'>");
 		out.println("<select name='mid'>");
 		while(rs.next()){
 			if(rs.getString(1).equals(mid)){
 				out.println("<option value='"+rs.getString(1)+"' selected>"+rs.getString(2)+"</option>");
 			}
-			out.println("<option value='"+rs.getString(1)+"'>"+rs.getString(2)+"</option>");
+			else
+				out.println("<option value='"+rs.getString(1)+"'>"+rs.getString(2)+"</option>");
 		}
 		out.println("</select>");
 		out.println("<button class='btn formSubmitBtns' type='submit'>확인</button>");

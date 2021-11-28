@@ -34,11 +34,11 @@
 		conn.setAutoCommit(false);
 		
 		if(isGet == 'N'){
-			query1 = "update SMENU_LIST set isget = 'Y' where sid = '"+sid+"'";
+			query1 = "update SMENU_LIST set isget = 'Y' where sid = '"+sid+"'"+ " and mid = '"+mid+"'";
         	query2 = "INSERT INTO RECEIVES VALUES('"+sid+"', '"+mid+"', '"+membership+"')";
 		}
 		else if(isGet == 'Y'){
-			query1 = "update SMENU_LIST set isget = 'N' where sid = '"+sid+"'";
+			query1 = "update SMENU_LIST set isget = 'N' where sid = '"+sid+"'"+ " and mid = '"+mid+"'";
         	query2 = "DELETE from RECEIVES where StudentId='"+sid+"' and MenuId ='"+mid+"'";
 		}
 		
