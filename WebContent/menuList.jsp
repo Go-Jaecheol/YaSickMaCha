@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="./css/global.css?after">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <script src="js/bootstrap.js"></script>
 <style type="text/css">
 	#controlBar {
@@ -22,20 +23,22 @@
 		display: flex;
 		margin-top: 50px;
 		height: 10%;
-		padding-bottom: 20px;
 		border-radius: 10px;
 		box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
-		justify-content: space-between;
+		justify-content: space-around;
 		align-items: center;
 	}
-	#formDiv {
-		float : left;
+	#adminMenuForm {
+		display: flex;
 	}
 	#buttonDiv {
 		float : right;
 	}
 	#commitBtn {
 		display: block;
+	}
+	.input-group {
+		margin: 0 10px 0 10px;
 	}
 </style>
 <title>YSMC</title>
@@ -65,18 +68,24 @@
 	<%@ include file="./adminNavbar.jsp" %>
 	<div id="controlBar" class="container">
 		<div id="formDiv">
-			<form action="menuList.jsp" method="post" accept-charset="utf-8">
-		      	<input name="input" type="text" />
-		      	<select name="section">
-			        <option value="mname" selected>메뉴이름</option>
-			        <option value="storeN">가게이름</option>
-			        <option value="seasonId">시즌</option>
-		     	</select>
-		    	<button class="btn formSubmitBtns" type="submit">검색</button>
+			<form action="menuList.jsp" method="post" accept-charset="utf-8" id="adminMenuForm">
+		      	<div class="input-group form-floating">
+	      			<input id="inputGroupSelect01" class="form-control" name="input" placeholder="학번" type="text">
+	      			<label for="inputGroupSelect01">검색</label>
+				</div>
+				<div class="input-group">
+			  		<label class="input-group-text" for="inputGroupSelect02">검색 기준</label>
+			  		<select class="form-select" id="inputGroupSelect02" name="section">
+			    		<option value="mname" selected>메뉴 이름</option>
+						<option value="storeN">가게 이름</option>
+						<option value="seasonId">시즌</option>
+			  		</select>
+				</div>
+		    	<button class="btn formSubmitBtns" id="adminSearchBtn" type="submit"><i class="fas fa-search"></i></button>
 	  		</form>
 		</div>
 	  	<div id="buttonDiv">
-	  		<button type="button" class="btn adminBtns" data-bs-toggle="modal" data-bs-target="#AddMenuModal">메뉴 추가</button>
+	  		<button type="button" class="btn adminBtns" data-bs-toggle="modal" data-bs-target="#AddMenuModal">메뉴 추가  <i class="fa-solid fa-plus"></i></button>
 	  	</div>
   	</div>
   	<div id="menuList" class="container">

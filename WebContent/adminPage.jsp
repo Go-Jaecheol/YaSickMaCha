@@ -16,23 +16,28 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="css/global.css?after">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <style type="text/css">
 	.transpose { width: 100%; }
 	.transpose tr { display: block; float: left; }
 	.transpose th { display: block; }
 	.transpose td { display: block; }
-	
+	#adminMainForm {
+		display: flex;
+	}
 	#controlBar {
 		width: 90%;
     	margin: 5px auto;
 		display: flex;
 		margin-top: 50px;
 		height: 10%;
-		padding-bottom: 20px;
 		border-radius: 10px;
 		box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
-		justify-content: space-between;
+		justify-content: center;
 		align-items: center;
+	}
+	.input-group {
+		margin: 0 10px 0 10px;
 	}
 </style>
 <title>YSMC</title>
@@ -126,21 +131,27 @@
 	<%@ include file="./adminNavbar.jsp" %>
 
 	<div id ="controlBar" class="container">
-		<form action="adminPage.jsp" method="post" accept-charset="utf-8">
-	      	<input name="input" type="text" />
-	      	<select name="section">
-		        <option value="sid" selected>학번</option>
-		        <option value="sname">이름</option>
-		        <option value="phone">핸드폰</option>
-	     	</select>
-	    	
-  
+		<form action="adminPage.jsp" method="post" accept-charset="utf-8" id="adminMainForm">
+	      	<div class="input-group form-floating">
+	      		<input id="inputGroupSelect01" class="form-control" name="input" placeholder="학번" type="text">
+	      		<label for="inputGroupSelect01">검색</label>
+			</div>
+			<div class="input-group">
+			  	<label class="input-group-text" for="inputGroupSelect02">검색 기준</label>
+			  	<select class="form-select" id="inputGroupSelect02" name="section">
+			    	<option value="sid" selected>학번</option>
+					<option value="sname">이름</option>
+					<option value="phone">휴대폰</option>
+			  	</select>
+			</div>
+	      	
 	<%	
 		query = "select mid, mname from menu where seasonid = '"+seasonId+"'";
 		pstmt=conn.prepareStatement(query);	
 		rs=pstmt.executeQuery();
-		
-		out.println("<select name='mid'>");
+		out.println("<div class=\"input-group\">");
+		out.println("<label class=\"input-group-text\" for=\"inputGroupSelect03\">메뉴 이름</label>");
+		out.println("<select class=\"form-select\" id=\"inputGroupSelect03\" name='mid'>");
 		while(rs.next()){
 			if(rs.getString(1).equals(mid)){
 				out.println("<option value='"+rs.getString(1)+"' selected>"+rs.getString(2)+"</option>");
@@ -149,7 +160,8 @@
 				out.println("<option value='"+rs.getString(1)+"'>"+rs.getString(2)+"</option>");
 		}
 		out.println("</select>");
-		out.println("<button class='btn formSubmitBtns' type='submit'>확인</button>");
+		out.println("</div>");
+		out.println("<button class='btn formSubmitBtns' id=\"adminSearchBtn\" type='submit'><i class=\"fas fa-search\"></i></button>");
 		out.println("</form>");
 	%>
 	</div>

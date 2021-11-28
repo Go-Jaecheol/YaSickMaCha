@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <link rel="stylesheet" href="./css/global.css">
 <style type="text/css">
 #admin_nav {
@@ -45,13 +46,13 @@
 			<a class="navbar-brand" style="display: contents;" href="./adminPage.jsp"><img src="./image/logo.png" class="img-fluid" width="9%"></a>
 			<ul class="nav nav-pills nav-fill justify-content-end" id="navTabs">
 				<li class="nav-item">
-					<a class="nav-link linkBtns" data-toggle="tab" href="./studentList.jsp">전체 학생리스트</a>
+					<a class="nav-link linkBtns" data-toggle="tab" href="./studentList.jsp">전체 학생리스트  <i class="fas fa-users"></i></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link linkBtns" data-toggle="tab" href="./menuList.jsp">메뉴관리</a>
+					<a class="nav-link linkBtns" data-toggle="tab" href="./menuList.jsp">메뉴 관리  <i class="fa-solid fa-hammer"></i></a>
 				</li>
 				<li class="nav-item">	
-					<button class="nav-link linkBtns" data-toggle="tab" data-bs-toggle="modal" data-bs-target="#realSignoutModal">SIGN OUT</button>
+					<button class="nav-link linkBtns" data-toggle="tab" data-bs-toggle="modal" data-bs-target="#realSignoutModal">SIGN OUT  <i class="fas fa-sign-out-alt"></i></button>
 				</li>
 			</ul>
 		</div>

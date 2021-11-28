@@ -12,21 +12,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/global.css?after">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <script src="js/bootstrap.js"></script>
 <style type="text/css">
+	#adminStdListForm {
+		display: flex;
+	}
 	#controlBar {
 		width: 90%;
     	margin: 5px auto;
 		display: flex;
 		margin-top: 50px;
 		height: 10%;
-		padding-bottom: 20px;
 		border-radius: 10px;
 		box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
-		justify-content: space-between;
+		justify-content: center;
 		align-items: center;
+	}
+	.input-group {
+		margin: 0 10px 0 10px;
 	}
 </style>
 <title>YSMC</title>
@@ -51,14 +57,20 @@
 	
 	<%@ include file="./adminNavbar.jsp" %>
 	<div id="controlBar">
-		<form action="studentList.jsp" method="post" accept-charset="utf-8">
-	      	<input name="input" type="text" />
-	      	<select name="section">
-		        <option value="sid" selected>학번</option>
-		        <option value="sname">이름</option>
-		        <option value="phone">핸드폰</option>
-	     	</select>
-	    	<button class="btn formSubmitBtns" type="submit">검색</button>
+		<form action="studentList.jsp" method="post" accept-charset="utf-8" id="adminStdListForm">
+	      	<div class="input-group form-floating">
+	      		<input id="inputGroupSelect01" class="form-control" name="input" placeholder="학번" type="text">
+	      		<label for="inputGroupSelect01">검색</label>
+			</div>
+			<div class="input-group">
+			  	<label class="input-group-text" for="inputGroupSelect02">검색 기준</label>
+			  	<select class="form-select" id="inputGroupSelect02" name="section">
+			    	<option value="sid" selected>학번</option>
+					<option value="sname">이름</option>
+					<option value="phone">휴대폰</option>
+			  	</select>
+			</div>
+	    	<button class="btn formSubmitBtns" id="adminSearchBtn" type="submit"><i class="fas fa-search"></i></button>
 	  	</form>
   	</div>
   	<div id="studentList" class="container">
