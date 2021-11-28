@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="./css/global.css">
+<link rel="stylesheet" href="./css/global.css?after">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <script type="text/javascript">
 	function ValidIn(e) {
 		var sid = document.getElementById("floatingSid").value;
@@ -101,33 +101,10 @@ img {
       inset -3px -3px 7px #FFFFFF;
     background: linear-gradient(318.32deg, rgba(163, 177, 198, 0.1) 0%, rgba(163, 177, 198, 0.1) 55%, rgba(163, 177, 198, 0.25) 100%);
 }
-h3 {
+h1 {
 	position: relative;
 	padding: 20px;
 	font-weight: 600;
-}
-#InBtn, #UpBtn {
-	width: 150px;
-	margin: auto;
-    background: #efefef;
- 	border: none;
-  	border-radius: .5rem;
-  	color: #444;
-  	font-size: 1rem;
- 	font-weight: 700;
-  	letter-spacing: .2rem;
-  	outline: none;
-  	transition: .2s ease-in-out;
-  	box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
-              -6px -6px 10px rgba(255, 255, 255, .5),
-              6px 6px 8px rgba(255, 255, 255, .075),
-              6px 6px 10px rgba(0, 0, 0, .15);olor 0.2s ease-out, transform 0.2s ease-out;
-}
-#InBtn:hover, #UpBtn:hover {
-	box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
-              -2px -2px 4px rgba(255, 255, 255, .4),
-              2px 2px 2px rgba(255, 255, 255, .05),
-              2px 2px 4px rgba(0, 0, 0, .1);
 }
 #signUp {
 	display: none;
@@ -147,7 +124,7 @@ h3 {
 	<div id="signForm" class="container">
 		<div id="signIn" class="fadein">
 			<form action="signIn.jsp" method="POST">
-				<h3>SIGN IN</h3>
+				<h1><i class="fas fa-user-check"></i></h1>
 				<div class="form-floating mb-3">
 					<input type="text" id="floatingSid" class="form-control" name="sid" placeholder="학번" oninput="ValidIn(this)" required autofocus>
 					<label for="floatingSid">학번</label>
@@ -159,12 +136,12 @@ h3 {
 					<div id="pwdHelp" class="invalid-feedback">5자 이내로 입력해주세요.</div>
 				</div>
 				<br/>
-				<button class="btn-lg form-control" id="InBtn" type="submit">SIGN IN</button>
+				<button class="btn-lg form-control formSubmitBtns" id="InBtn" type="submit">SIGN IN</button>
 			</form>
 		</div>
 		<div id="signUp">
 			<form action="signUp.jsp" method="POST">
-				<h3>SIGN UP</h3>
+				<h1><i class="fas fa-user-edit"></i></h1>
 				<div class="form-floating mb-3">
 					<input type="text" id="floatingUpSid" class="form-control" name="sid" placeholder="학번" oninput="ValidUp(this)" required autofocus>
 					<label for="floatingUpSid">학번</label>
@@ -191,7 +168,7 @@ h3 {
 					<div id="dnoUpHelp" class="invalid-feedback">형식에 맞게 입력해주세요.</div>
 				</div>
 				<br/>
-                <button class="btn btn-lg form-control" id="UpBtn" type="submit">SIGN UP</button>
+                <button class="btn btn-lg form-control formSubmitBtns" id="UpBtn" type="submit">SIGN UP</button>
 			</form>
 		</div>
 		<br/>

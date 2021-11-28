@@ -75,9 +75,11 @@ h3 {
 }
 #commitBtn {
 	width: 150px;
+	display: block;
 }
 #reviewBtn {
 	width: 150px;
+	display: block;
 }
 #chBtn {
 	float: right;
@@ -88,15 +90,15 @@ h3 {
 <body>
 	<%@ include file="./navbar.jsp" %>
 	<div id="mypagePaper" class="container">
-		<h3>MY PAGE</h3>
+		<h3 class="formTitle">MY PAGE</h3>
 		<nav>
 			<div class="nav nav-tabs" id="nav-tab" role="tablist">
-			    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-info" type="button" role="tab" aria-controls="nav-home" aria-selected="true">회원 정보</button>
-		    	<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-menu" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">신청 메뉴</button>
+			    <button class="nav-link active" id="nav-info-tab" data-bs-toggle="tab" data-bs-target="#nav-info" type="button" role="tab" aria-controls="nav-home" aria-selected="true"><strong>회원 정보</strong></button>
+		    	<button class="nav-link" id="nav-menu-tab" data-bs-toggle="tab" data-bs-target="#nav-menu" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"><strong>신청 메뉴</strong></button>
 			</div>
 		</nav>
 		<div class="tab-content" id="nav-tabContent">
-  			<div class="tab-pane fade show active" id="nav-info" role="tabpanel" aria-labelledby="nav-home-tab">
+  			<div class="tab-pane fade show active" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
   			<%
 	  			String serverIP = "localhost";
 	  			String strSID = "orcl"; //ORCLCDB
@@ -146,10 +148,10 @@ h3 {
 	  				out.println("<dt class=\"col-sm-6 text-center\">학과</dt>");
 	  				out.println("<dd class=\"col-sm-6 text-center\">" + depart + "</dd>");
 	  				out.println("</dl>");
-					out.println("<button type=\"button\" class=\"btn btn-outline-primary\" id=\"chBtn\" data-bs-toggle=\"modal\" data-bs-target=\"#MypageUpdateModal\">수정  <i class=\"fas fa-user-edit\"></i></button>");
+					out.println("<button type=\"button\" class=\"btn updateInfoBtn\" id=\"chBtn\" data-bs-toggle=\"modal\" data-bs-target=\"#MypageUpdateModal\">수정  <i class=\"fas fa-user-edit\"></i></button>");
 				} %>
   			</div>
-			<div class="tab-pane fade" id="nav-menu" role="tabpanel" aria-labelledby="nav-profile-tab">
+			<div class="tab-pane fade" id="nav-menu" role="tabpanel" aria-labelledby="nav-menu-tab">
 				<% 
 					query = "SELECT m.SeasonId, m.StoreN, m.Mname, s.IsGet "
 							+ "FROM SMENU_LIST s, MENU m " 
@@ -183,7 +185,7 @@ h3 {
 							if (isget.equals("X"))
 								out.println("<td class=\"text-center\" style=\"color: red\">작성 불가</td>");
 							else
-								out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn btn-primay\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\">Go!</button></td>");
+								out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn btn-primay\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\"><i class=\"fas fa-share\"></i></button></td>");
 							out.println("</tr>");
 							cnt += 1;
 						} while(rs.next());
@@ -231,7 +233,7 @@ h3 {
    	        			out.println("<label class=\"form-check-label\" for=\"depart2\">글솦</label>");
    	        			out.println("</div>");
 	        			out.println("</div>");
-						out.println("<button class=\"btn btn-outline-primary form-control\" id=\"commitBtn\" type=\"submit\">수정 완료</button>");
+						out.println("<button class=\"btn form-control modalBtns\" id=\"commitBtn\" type=\"submit\">수정 완료</button>");
 						out.println("</form>");
 		  			%>
 	      			</div>
@@ -257,7 +259,7 @@ h3 {
 						// 남긴 후기가 있는 경우, 그 후기를 보여주고 그렇지 않은 경우 후기 작성 form
 						if (!rs.next()) {
 							out.println("<form action=\"ratingInsert.jsp\" method=\"POST\">");
-							out.println("<h3>리뷰 작성하기</h3>");
+							out.println("<h3 class=\"formTitle\">리뷰 작성하기</h3>");
 							out.println("<div class=\"form-floating mb-3\">");
 							out.println("<input type=\"text\" id=\"floatingMname\" class=\"form-control\" name=\"mname\" value=\"" + mname + "\" readonly>");
 							out.println("<label for=\"floatingMname\">메뉴 이름</label>");
@@ -272,7 +274,7 @@ h3 {
 							out.println("<label for=\"floatingComments\">후기</label>");
 							out.println("<div id=\"commentsHelp\" class=\"invalid-feedback\">75자 이내로 작성해주세요.</div>");
 							out.println("</div>");
-							out.println("<button class=\"btn btn-outline-primary form-control\" id=\"reviewBtn\" type=\"submit\">작성 완료</button>");
+							out.println("<button class=\"btn form-control modalBtns\" id=\"reviewBtn\" type=\"submit\">작성 완료</button>");
 							out.println("</form>");
 							out.println("</div>");
 		      			}
@@ -292,7 +294,7 @@ h3 {
 							out.println(comm);
 							out.println("</div>");
 							out.println("<div class=\"modal-footer\">");
-							out.println("<button type=\"button\" class=\"btn btn-danger\" onclick=\"location.href='ratingDelete.jsp?mid=" + mid + "'\">삭제하기</button>");
+							out.println("<button type=\"button\" class=\"btn btn-danger\" onclick=\"location.href='ratingDelete.jsp?mid=" + mid + "'\"><i class=\"fas fa-trash-alt\"></i></button>");
 							out.println("</div>");
 						}
 		  				rs.close();

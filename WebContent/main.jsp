@@ -9,6 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/global.css">
 <script type="text/javascript">
     $(document).ready(function() {
         $("#MenuRequestModal").on("show.bs.modal", function(e) {
@@ -109,7 +110,7 @@ h1 {
 				<option value='M'>중간</option>
 				<option value='F'>기말</option>
 			</select>
-			<input type="submit" value="submit">
+			<input class="formSubmitBtns" type="submit" value="submit">
 		</form>
 	</div>
 	<div id="menuList" class="container">
