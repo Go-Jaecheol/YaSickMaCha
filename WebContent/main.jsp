@@ -193,7 +193,11 @@ h1 {
 					pstmt.setString(1, user_name);
 					ResultSet rs_temp = pstmt.executeQuery();
 					if(!rs_temp.next()) {
-						
+						if(IsMenuForMembership.equals("Y") && Membership.equals("N"))
+							out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-info\" data-bs-toggle=\"modal\" data-bs-target=\"#notMembership\">Go!</button></td>");
+						else {
+							out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-info\" data-bs-toggle=\"modal\" data-bs-target=\"#MenuRequestModal\" data-mname=\""+Mname+"\" data-mid=\""+Mid+"\">Go!</button></td>");
+						}
 					} else {
 						do {
 							String rsMid = rs_temp.getString(1);
