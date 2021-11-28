@@ -71,8 +71,8 @@
 					if (!rs.next()) { // 작성한 후기가 없다는 의미
 						rating=Integer.parseInt(request.getParameter("rating"));
 						comments=request.getParameter("comments");
-						query = "SELECT COUNT(*) "
-								+ "FROM RATING";
+						query = "SELECT MAX(TO_NUMBER(Rid)) "
+								+ "FROM RATING ORDER BY TO_NUMBER(Rid) ASC";
 						pstmt=conn.prepareStatement(query);
 						rs=pstmt.executeQuery();
 						if (rs.next())
