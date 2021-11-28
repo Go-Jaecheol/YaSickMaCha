@@ -14,6 +14,7 @@
 		HttpSession session = request.getSession();
 		Object getdata = session.getAttribute("user_name");
 		String user_name = (String)getdata;
+		if (user_name == null) response.sendRedirect("index.jsp");
 		
 		String serverIP = "localhost";
 		String strSID = "orcl"; //ORCLCDB
@@ -34,6 +35,9 @@
 		int res = -1;
    		int menu_quan = 0;
    		String Sid = "";
+   		String year = "";
+   		String semester = "";
+   		String exam = "";
 		try {
 			query = "SELECT Sid "
 					+ "FROM STUDENT " 
@@ -44,7 +48,7 @@
 			while(rs.next()) {
 				Sid = rs.getString(1);
 			}
-			query = "SELECT Quantity "
+			query = "SELECT Quantity, SUBSTR(SeasonId, 1, 4), SUBSTR(SeasonId, 5, 1), SUBSTR(SeasonId, 6, 1) "
 					+ "FROM MENU " 
 					+ "WHERE Mid = ? "
 					+ "FOR UPDATE";
@@ -53,6 +57,9 @@
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				menu_quan = rs.getInt(1);
+				year = rs.getString(2);
+				semester = rs.getString(3);
+				exam = rs.getString(4);
 			}
 			if (menu_quan > 0) {
 				query = "UPDATE MENU "
@@ -76,7 +83,11 @@
 			    %>
 			    <script>
 					alert("신청이 완료되었습니다!");
-					window.location = 'main.jsp';
+					var y = <%= year %>;
+					var s = <%= semester %>;
+					var e =	"<%out.print(exam);%>";
+					var url = 'main.jsp?year=' + encodeURI(y) + '&semester=' + encodeURI(s) + '&exam=' + encodeURI(e);
+					window.location = url;
 				</script>
 				<%
 			} else {
@@ -86,7 +97,11 @@
 				%>
 				<script>
 					alert("남은 수량이 없습니다!");
-					window.location = 'main.jsp';
+					var y = <%= year %>;
+					var s = <%= semester %>;
+					var e = "<%out.print(exam);%>";
+					var url = 'main.jsp?year=' + encodeURI(y) + '&semester=' + encodeURI(s) + '&exam=' + encodeURI(e);
+					window.location = url;
 				</script>
 				<%
 			}

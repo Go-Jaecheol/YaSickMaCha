@@ -10,12 +10,14 @@
 <script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="css/bootstrap.css">
 <script type="text/javascript">
-    function handleMenuInfo(element) {
-    	var info = element.getElementsByTagName("td");
-    	var mid = info[0].innerHTML;
-    	
-    	document.location.href = "menuInfo.jsp?mid=" + mid;
-    }
+    $(document).ready(function() {
+        $("#MenuRequestModal").on("show.bs.modal", function(e) {
+        	var mname = $(e.relatedTarget).data('mname');
+            var mid = $(e.relatedTarget).data('mid');
+            document.getElementById("MenuRequestModalLabel").innerHTML = mname;
+            $('input[name=mid]').attr('value',mid);
+        });
+    });
 </script>
 <style type="text/css">
 html {
@@ -67,7 +69,7 @@ h1 {
 <body>
 	<%@ include file="./navbar.jsp" %>
 	<div id="searchBar" class="container">
-		<form action="main.jsp" method="POST">
+		<form action="main.jsp" method="GET">
 			<select name="year">
 				<option value=''></option>
 				<%
@@ -117,7 +119,8 @@ h1 {
 		String exam = request.getParameter("exam");
 		
 		String seasonId = year+semester+exam;
-		String Sid = "";
+		String Sid = "", Mid = "", Mname = "", IsMenuForMembership = "", StoreN = "", Membership = "";
+		int Quantity = 0;
 		String[] attr = {"#", "가게 이름", "메뉴 이름", "수량", "학생회비 필요여부", "조회"};
 		try {
 			query = "SELECT Mid, Mname, Quantity, IsMenuForMembership, StoreN, Membership, Sid "
@@ -143,12 +146,12 @@ h1 {
 				out.println("</thead>");
 				do {
 					// Fill out your code
-					String Mid = rs.getString(1);
-					String Mname = rs.getString(2);
-					int Quantity = rs.getInt(3);
-					String IsMenuForMembership = rs.getString(4);
-					String StoreN = rs.getString(5);
-					String Membership = rs.getString(6);
+					Mid = rs.getString(1);
+					Mname = rs.getString(2);
+					Quantity = rs.getInt(3);
+					IsMenuForMembership = rs.getString(4);
+					StoreN = rs.getString(5);
+					Membership = rs.getString(6);
 					Sid = rs.getString(7);
 					
 					out.println("<tr class=\"table-active\">");
@@ -158,14 +161,36 @@ h1 {
 					out.println("<td class=\"text-center\">" + Quantity + "</td>");
 					out.println("<td class=\"text-center\">" + IsMenuForMembership + "</td>");
 					
-					if(IsMenuForMembership.equals("Y") && Membership.equals("N"))
-						out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-info\" data-bs-toggle=\"modal\" data-bs-target=\"#notMembership\">Go!</button></td>");
-					else {
-						%>
-						<td class="text-center"><button type="button" class="btn btn-info" onclick="location.href='menuInfo.jsp?mid=' + <%=Mid%>;">Go!</button></td>
-						<% 
+					boolean isDuplicated = false;
+					query = "SELECT Mid, STUDENT.Sid "
+							+ "FROM SMENU_LIST, STUDENT " 
+							+ "WHERE Sname = ? "
+							+ "AND SMENU_LIST.Sid = STUDENT.Sid";
+					pstmt=conn.prepareStatement(query);
+					pstmt.setString(1, user_name);
+					ResultSet rs_temp = pstmt.executeQuery();
+					if(!rs_temp.next()) {
+						
+					} else {
+						do {
+							String rsMid = rs_temp.getString(1);
+							Sid = rs_temp.getString(2);
+							if(rsMid.equals(Mid)) {
+								out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"modal\" data-bs-target=\"#duplicatedModal\">신청완료</button></td>");
+								isDuplicated = true;
+								break;
+							}
+						}while(rs_temp.next());
+						if (!isDuplicated) {
+							if(IsMenuForMembership.equals("Y") && Membership.equals("N"))
+								out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-info\" data-bs-toggle=\"modal\" data-bs-target=\"#notMembership\">Go!</button></td>");
+							else {
+								out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-info\" data-bs-toggle=\"modal\" data-bs-target=\"#MenuRequestModal\" data-mname=\""+Mname+"\" data-mid=\""+Mid+"\">Go!</button></td>");
+							}
+						}
 					}
 					out.println("</tr>");
+					rs_temp.close();
 				} while(rs.next());
 				out.println("</table");
 			}
@@ -175,8 +200,24 @@ h1 {
 		rs.close();
 		pstmt.close();
 	%>
-	</div>
 	
+	<!-- Duplicated Alert -->
+	<div class="modal fade" id="duplicatedModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="modalLabel">Alert</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<p id="modalMessage">이미 신청한 메뉴입니다.</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	<!-- Not Membership Alert -->
 	<div class="modal fade" id="notMembership" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
@@ -194,5 +235,26 @@ h1 {
 	    </div>
 	  </div>
 	</div>
+	<!-- Menu Request Modal -->
+	<div class="modal fade" id="MenuRequestModal" tabindex="-1" aria-labelledby="MenuRequestModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+		  		<div class="modal-content">
+		      		<div class="modal-header">
+		        		<h5 class="modal-title" id="MenuRequestModalLabel">메뉴 신청</h5>
+		        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      		</div>
+					<div class="modal-body">
+						<form action="menuInfoUpdate.jsp" method="POST">
+						<h5 id=ModalMessage>해당 메뉴를 신청하시겠습니까?</h5>
+						<input type="hidden" id="floatingMid" class="form-control" name="mid" value="">
+						<button class="btn btn-outline-primary form-control" id="reviewBtn" type="submit">신청 완료</button>
+						</form>
+						</div>
+	        		
+    				</div>
+		  		</div>
+			</div>
+	</div>
+</div>
 </body>
 </html>
