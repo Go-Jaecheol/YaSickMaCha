@@ -12,9 +12,9 @@
 		request.setCharacterEncoding("utf-8");
 		// 사용자 정보 UPDATE, session UPDATE
 		HttpSession session = request.getSession();
-		Object getdata = session.getAttribute("user_name");
-		String user_name = (String)getdata;
-		if (user_name == null) response.sendRedirect("index.jsp");
+		Object getdata = session.getAttribute("user_id");
+		String user_id = (String)getdata;
+		if (user_id == null) response.sendRedirect("index.jsp");
 		
 		String serverIP = "localhost";
 		String strSID = "orcl"; //ORCLCDB
@@ -34,20 +34,11 @@
 		String menu_id = request.getParameter("mid");
 		int res = -1;
    		int menu_quan = 0;
-   		String Sid = "";
+   		String Sid = user_id;
    		String year = "";
    		String semester = "";
    		String exam = "";
 		try {
-			query = "SELECT Sid "
-					+ "FROM STUDENT " 
-					+ "WHERE Sname = ?";
-			pstmt=conn.prepareStatement(query);
-			pstmt.setString(1, user_name);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				Sid = rs.getString(1);
-			}
 			query = "SELECT Quantity, SUBSTR(SeasonId, 1, 4), SUBSTR(SeasonId, 5, 1), SUBSTR(SeasonId, 6, 1) "
 					+ "FROM MENU " 
 					+ "WHERE Mid = ? "

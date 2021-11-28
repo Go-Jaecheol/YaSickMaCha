@@ -125,27 +125,15 @@ h3 {
 		<div class="tab-content" id="nav-tabContent">
   			<div class="tab-pane fade show active" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
   			<%
-	  			String serverIP = "localhost";
-	  			String strSID = "orcl"; //ORCLCDB
-	  			String portNum = "1521";
-	  			String user = "db11"; //lucifer
-	  			String pass = "db11";	//1234
-	  			String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
-	  			String query, sname=user_name;
-	  			String sid="", phone="", mem="", depart="", season="", storen="", mname="", mid="", isget="", comm="";
+	  			String season="", storen="", mname="", mid="", isget="", comm="";
 	  			String[] attr = {"#", "야식마차", "가게 이름", "메뉴 이름", "수령 여부", "REVIEW"};
 	  			int cnt=1, rating=0;
-	  			Connection conn=null;
-	  			PreparedStatement pstmt;
-	  			ResultSet rs;
 	  			
-	  			Class.forName("oracle.jdbc.driver.OracleDriver");
-	  			conn=DriverManager.getConnection(url, user, pass);
-	  			query = "SELECT Sid, Phone, Membership, Dno "
+	  			query = "SELECT Phone, Membership, Dno "
 	  					+ "FROM STUDENT " 
-	  					+ "WHERE Sname = ?";
+	  					+ "WHERE Sid = ?";
 	  			pstmt=conn.prepareStatement(query);
-	  			pstmt.setString(1, sname);
+	  			pstmt.setString(1, sid);
 	  			rs=pstmt.executeQuery();
 	  			if (!rs.next()) { %>
 				<script>
@@ -154,12 +142,6 @@ h3 {
 				</script>
   				<% }
 	  			else {
-	  				String rtn = request.getParameter("isUp");
-	  				sid = rs.getString(1);
-	  				phone = rs.getString(2);
-	  				mem = (rs.getString(3).equals("N") ? "X" : "O");
-	  				int d = rs.getInt(4);
-	  				depart = (d == 1 ? "심컴" : "글솦");
 	  				out.println("<dl class=\"row\">");
 	  				out.println("<dt class=\"col-sm-6 text-center\">학번</dt>");
 	  				out.println("<dd class=\"col-sm-6 text-center\">" + sid + "</dd><br/>");

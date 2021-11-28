@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" session="false" import="javax.servlet.http.HttpSession" %>
+<%@ page session = "false" language="java" import="java.text.*, java.sql.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,16 +31,45 @@
 <body>
 	<%
 		HttpSession session = request.getSession();
-		Object getdata = session.getAttribute("user_name");
-		String user_name = (String)getdata;
-		if (user_name == null) response.sendRedirect("index.jsp");
+		Object getdata = session.getAttribute("user_id");
+		String user_id = (String)getdata;
+		if (user_id == null) response.sendRedirect("index.jsp");
+		
+		String serverIP = "localhost";
+		String strSID = "orcl"; //ORCLCDB
+		String portNum = "1521";
+		String user = "db11"; //lucifer
+		String pass = "db11";	//1234
+		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
+		String query, sid=user_id, sname="", phone="", mem="", depart="";
+
+		Connection conn=null;
+		PreparedStatement pstmt;
+		ResultSet rs;
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		conn=DriverManager.getConnection(url, user, pass);
+		conn.setAutoCommit(false);
+		
+		query = "SELECT Sname, Phone, Membership, Dno "
+				+ "FROM STUDENT " 
+				+ "WHERE Sid = ?";
+		pstmt=conn.prepareStatement(query);
+		pstmt.setString(1, sid);
+		rs=pstmt.executeQuery();
+		if (rs.next()) {
+			sname=rs.getString(1);
+			phone=rs.getString(2);
+			mem = (rs.getString(3).equals("N") ? "X" : "O");
+			depart = (rs.getInt(4) == 1 ? "심컴" : "글솦");
+		}
     %>
 	<nav class="navbar navbar-light bg-light" id="main_nav">
 		<div class="container-fluid">
 			<a class="navbar-brand" style="display: contents;" href="./main.jsp"><img src="./image/logo.png" class="img-fluid" width="9%"></a>
 			<ul class="nav nav-pills nav-fill" id="navTabs">
 				<li class="nav-item">
-					<a class="nav-link linkBtns" data-toggle="tab" href="./mypage.jsp"><%=user_name %>의 <i class="fas fa-user"></i></a>
+					<a class="nav-link linkBtns" data-toggle="tab" href="./mypage.jsp"><%=sname %>의 <i class="fas fa-user"></i></a>
 				</li>
 				<li class="nav-item">	
 					<button class="nav-link linkBtns" data-toggle="tab" data-bs-toggle="modal" data-bs-target="#realSignoutModal">SIGN OUT  <i class="fas fa-sign-out-alt"></i></button>

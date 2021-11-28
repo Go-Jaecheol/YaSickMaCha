@@ -12,9 +12,9 @@
 		request.setCharacterEncoding("utf-8");
 		// 사용자 정보 UPDATE, session UPDATE
 		HttpSession session = request.getSession();
-		Object getdata = session.getAttribute("user_name");
-		String user_name = (String)getdata;
-		if (user_name == null) response.sendRedirect("index.jsp");
+		Object getdata = session.getAttribute("user_id");
+		String user_id = (String)getdata;
+		if (user_id == null) response.sendRedirect("index.jsp");
 		
 		String serverIP = "localhost";
 		String strSID = "orcl"; //ORCLCDB
@@ -22,8 +22,7 @@
 		String user = "db11"; //lucifer
 		String pass = "db11";	//1234
 		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
-		String query;
-		String nSname="";
+		String query, nSname;
 		int res = -1, dno;
 		Connection conn=null;
 		PreparedStatement pstmt;
@@ -33,17 +32,17 @@
 		
 		query = "UPDATE STUDENT "
 				+ "SET Sname = ?, Dno = ? " 
-				+ "WHERE Sname = ?";
+				+ "WHERE Sid = ?";
 		pstmt=conn.prepareStatement(query);
 		nSname=request.getParameter("sname");
 		dno=request.getParameter("depart").equals("심컴") ? 1 : 2;
 		pstmt.setString(1, nSname);
 		pstmt.setInt(2, dno);
-		pstmt.setString(3, user_name);
+		pstmt.setString(3, user_id);
 		res=pstmt.executeUpdate();
 		
 		// session 정보 변경
-		session.setAttribute("user_name", nSname);
+		session.setAttribute("user_id", user_id);
 		
 		pstmt.close();
 		conn.close();

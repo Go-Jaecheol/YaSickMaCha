@@ -87,20 +87,6 @@ h1 {
 			  	<select class="form-select" id="inputGroupSelect01" name="year">
 			    	<option selected>연도 선택</option>
 			    	<%
-						String serverIP = "localhost";
-						String strSID = "orcl"; //ORCLCDB
-						String portNum = "1521";
-						String user = "db11"; //lucifer
-						String pass = "db11";	//1234
-						String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
-						String query;
-						Connection conn=null;
-						PreparedStatement pstmt;
-						ResultSet rs;
-						
-						Class.forName("oracle.jdbc.driver.OracleDriver");
-						conn=DriverManager.getConnection(url, user, pass);
-						conn.setAutoCommit(false);
 						query = "SELECT DISTINCT SUBSTR(SeasonId, 1, 4) "
 								+ "FROM SEASON";
 						pstmt=conn.prepareStatement(query);
@@ -146,13 +132,13 @@ h1 {
 		int Quantity = 0;
 		String[] attr = {"#", "가게 이름", "메뉴 이름", "수량", "학생회비 필요여부", "조회"};
 		try {
-			query = "SELECT Mid, Mname, Quantity, IsMenuForMembership, StoreN, Membership, Sid "
+			query = "SELECT Mid, Mname, Quantity, IsMenuForMembership, StoreN, Membership "
 					+ "FROM MENU, STUDENT " 
 					+ "WHERE SeasonId = ? "
-					+ "AND Sname = ?";
+					+ "AND Sid = ?";
 			pstmt=conn.prepareStatement(query);
 			pstmt.setString(1, seasonId);
-			pstmt.setString(2, user_name);
+			pstmt.setString(2, user_id);
 			rs = pstmt.executeQuery();
 			out.println("<table class=" + "table table-primary table-hover" + ">");
 			if (!rs.next()) {
@@ -175,7 +161,6 @@ h1 {
 					IsMenuForMembership = rs.getString(4);
 					StoreN = rs.getString(5);
 					Membership = rs.getString(6);
-					Sid = rs.getString(7);
 					
 					out.println("<tr class=\"table-active\">");
 					out.println("<td class=\"text-center\">" + Mid + "</td>");
@@ -185,12 +170,11 @@ h1 {
 					out.println("<td class=\"text-center\">" + IsMenuForMembership + "</td>");
 					
 					boolean isDuplicated = false;
-					query = "SELECT Mid, STUDENT.Sid "
-							+ "FROM SMENU_LIST, STUDENT " 
-							+ "WHERE Sname = ? "
-							+ "AND SMENU_LIST.Sid = STUDENT.Sid";
+					query = "SELECT Mid "
+							+ "FROM SMENU_LIST " 
+							+ "WHERE Sid = ? ";
 					pstmt=conn.prepareStatement(query);
-					pstmt.setString(1, user_name);
+					pstmt.setString(1, user_id);
 					ResultSet rs_temp = pstmt.executeQuery();
 					if(!rs_temp.next()) {
 						if(IsMenuForMembership.equals("Y") && Membership.equals("N"))
@@ -201,7 +185,6 @@ h1 {
 					} else {
 						do {
 							String rsMid = rs_temp.getString(1);
-							Sid = rs_temp.getString(2);
 							if(rsMid.equals(Mid)) {
 								out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"modal\" data-bs-target=\"#duplicatedModal\">신청 완료</button></td>");
 								isDuplicated = true;
