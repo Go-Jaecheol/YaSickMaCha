@@ -24,6 +24,9 @@
 body {
 	text-align: center;
 }
+#mainForm {
+	display: flex;
+}
 h1 {
 	position: relative;
 	padding: 20px;
@@ -35,9 +38,16 @@ h1 {
 	display: flex;
 	margin-top: 50px;
 	height: 10%;
-	padding-bottom: 20px;
 	border-radius: 10px;
 	box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
+	align-items: center;
+	justify-content: center;
+}
+.input-group {
+	margin: 0 10px 0 10px;
+}
+#mainSearchBtn {
+	margin: 0 0 0 10px;
 }
 #menuList {
 	display: flex;
@@ -45,7 +55,6 @@ h1 {
 	overflow: auto;
 	margin-top: 50px;
 	height: auto;
-	padding-bottom: 20px;
 	border-radius: 10px;
 	box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
 	align-items: center;
@@ -62,53 +71,67 @@ h1 {
 #reviewBtn {
 	display: block;
 }
+#modalMessage {
+	font-weight: 600;
+}
 </style>
 <title>YSMC</title>
 </head>
 <body>
 	<%@ include file="./navbar.jsp" %>
 	<div id="searchBar" class="container">
-		<form action="main.jsp" method="GET">
-			<select name="year">
-				<option value=''></option>
-				<%
-					String serverIP = "localhost";
-					String strSID = "orcl"; //ORCLCDB
-					String portNum = "1521";
-					String user = "db11"; //lucifer
-					String pass = "db11";	//1234
-					String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
-					String query;
-					Connection conn=null;
-					PreparedStatement pstmt;
-					ResultSet rs;
-					
-					Class.forName("oracle.jdbc.driver.OracleDriver");
-					conn=DriverManager.getConnection(url, user, pass);
-					conn.setAutoCommit(false);
-					query = "SELECT DISTINCT SUBSTR(SeasonId, 1, 4) "
-							+ "FROM SEASON";
-					pstmt=conn.prepareStatement(query);
-					rs=pstmt.executeQuery();
-					while(rs.next()){
-						String seasonId = rs.getString(1);
-				%>
-						<option value=<%= seasonId %>><%= seasonId %>년</option>
-				<%
-					}
-					rs.close();
-					pstmt.close();
-				%>
-			</select>
-			<select name="semester">
-				<option value='1'>1학기</option>
-				<option value='2'>2학기</option>
-			</select>
-			<select name="exam">
-				<option value='M'>중간</option>
-				<option value='F'>기말</option>
-			</select>
-			<input class="formSubmitBtns" type="submit" value="submit">
+		<form action="main.jsp" method="GET" id="mainForm">
+			<div class="input-group">
+			  	<label class="input-group-text" for="inputGroupSelect01">연도</label>
+			  	<select class="form-select" id="inputGroupSelect01" name="year">
+			    	<option selected>연도 선택</option>
+			    	<%
+						String serverIP = "localhost";
+						String strSID = "orcl"; //ORCLCDB
+						String portNum = "1521";
+						String user = "db11"; //lucifer
+						String pass = "db11";	//1234
+						String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
+						String query;
+						Connection conn=null;
+						PreparedStatement pstmt;
+						ResultSet rs;
+						
+						Class.forName("oracle.jdbc.driver.OracleDriver");
+						conn=DriverManager.getConnection(url, user, pass);
+						conn.setAutoCommit(false);
+						query = "SELECT DISTINCT SUBSTR(SeasonId, 1, 4) "
+								+ "FROM SEASON";
+						pstmt=conn.prepareStatement(query);
+						rs=pstmt.executeQuery();
+						while(rs.next()){
+							String seasonId = rs.getString(1);
+					%>
+				    	<option value=<%= seasonId %>><%= seasonId %>년</option>
+			    	<%
+						}
+						rs.close();
+						pstmt.close();
+					%>
+			  	</select>
+			</div>
+			<div class="input-group">
+			  	<label class="input-group-text" for="inputGroupSelect02">학기</label>
+			  	<select class="form-select" id="inputGroupSelect02" name="semester">
+			    	<option selected>학기 선택</option>
+					<option value='1'>1학기</option>
+					<option value='2'>2학기</option>
+			  	</select>
+			</div>
+			<div class="input-group">
+			  	<label class="input-group-text" for="inputGroupSelect03">시험</label>
+			  	<select class="form-select" id="inputGroupSelect03" name="exam">
+			    	<option selected>시험 선택</option>
+					<option value='M'>중간</option>
+					<option value='F'>기말</option>
+			  	</select>
+			</div>
+			<button id="mainSearchBtn" class="formSubmitBtns" type="submit"><i class="fas fa-search"></i></button>
 		</form>
 	</div>
 	<div id="menuList" class="container">
@@ -131,11 +154,11 @@ h1 {
 			pstmt.setString(2, user_name);
 			rs = pstmt.executeQuery();
 			out.println("<table class=" + "table table-primary table-hover" + ">");
-			
 			if (!rs.next()) {
-				out.println("<h1>불러올 정보가 없습니다.</h1>");
+				out.println("<h1 style=\"font-weight: 600; margin: 0;\">불러올 정보가 없습니다.</h1>");
 				out.println("</table");
 			} else {
+				out.println("<h1>"+ year + "년 " + semester + "학기 " + (exam.equals("M") ? "중간" : "기말") + " 야식마차 메뉴" + "</h1>");
 				out.println("<thead>");
 				out.println("<tr>");
 				for (String obj : attr) {
@@ -175,7 +198,7 @@ h1 {
 							String rsMid = rs_temp.getString(1);
 							Sid = rs_temp.getString(2);
 							if(rsMid.equals(Mid)) {
-								out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"modal\" data-bs-target=\"#duplicatedModal\">신청완료</button></td>");
+								out.println("<td class=\"text-center\"><button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"modal\" data-bs-target=\"#duplicatedModal\">신청 완료</button></td>");
 								isDuplicated = true;
 								break;
 							}
@@ -202,34 +225,28 @@ h1 {
 	
 	<!-- Duplicated Alert -->
 	<div class="modal fade" id="duplicatedModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog modal-dialog-centered">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="modalLabel">알림</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
-	      <div class="modal-body">
+	      <div class="modal-body text-center">
 	      	<p id="modalMessage">이미 신청한 메뉴입니다.</p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 	      </div>
 	    </div>
 	  </div>
 	</div>
 	<!-- Not Membership Alert -->
 	<div class="modal fade" id="notMembership" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog modal-dialog-centered">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="modalLabel">알림</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
-	      <div class="modal-body">
-	        학생회비 납부자가 아닙니다.
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	      <div class="modal-body text-center">
+	        <p id="modalMessage">학생회비 납부자가 아닙니다.</p>
 	      </div>
 	    </div>
 	  </div>
@@ -242,11 +259,11 @@ h1 {
 	        		<h5 class="modal-title" id="MenuRequestModalLabel">메뉴 신청</h5>
 	        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      		</div>
-				<div class="modal-body">
+				<div class="modal-body text-center">
 					<form action="menuInfoUpdate.jsp" method="POST">
-						<h5 id=ModalMessage>해당 메뉴를 신청하시겠습니까?</h5>
+						<h5 id="ModalMessage">해당 메뉴를 신청하시겠습니까?</h5>
 						<input type="hidden" id="floatingMid" class="form-control" name="mid" value="">
-						<button class="btn form-control formSubmitBtns" id="reviewBtn" type="submit">신청 완료</button>
+						<button class="btn form-control formSubmitBtns" id="reviewBtn" type="submit">신청</button>
 					</form>
 				</div>
 			</div>
