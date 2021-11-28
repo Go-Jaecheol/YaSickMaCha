@@ -48,6 +48,7 @@
 		pstmt.close();
 		conn.close();
 		%>
+		
 		<script>
 			alert("수정 완료!");
 			document.location.href = "mypage.jsp";

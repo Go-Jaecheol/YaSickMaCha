@@ -34,6 +34,9 @@
 	#buttonDiv {
 		float : right;
 	}
+	#commitBtn {
+		display: block;
+	}
 </style>
 <title>YSMC</title>
 </head>
@@ -73,7 +76,7 @@
 	  		</form>
 		</div>
 	  	<div id="buttonDiv">
-	  		<button class="btn adminBtns" onclick="location.href = 'addMenu.jsp'">메뉴추가</button>
+	  		<button type="button" class="btn adminBtns" data-bs-toggle="modal" data-bs-target="#AddMenuModal">메뉴 추가</button>
 	  	</div>
   	</div>
   	<div id="menuList" class="container">
@@ -104,10 +107,10 @@
 		rs=pstmt.executeQuery();
 		out.println("<table class='table table-striped'>");
 		out.println("<thead>");
-		out.println("<th class=\"text-center\">메뉴이름</th>");
+		out.println("<th class=\"text-center\">메뉴 이름</th>");
 		out.println("<th class=\"text-center\">수량</th>");
 		out.println("<th class=\"text-center\">학생회비 납부자용 메뉴 여부</th>");
-		out.println("<th class=\"text-center\">가게이름</th>");
+		out.println("<th class=\"text-center\">가게 이름</th>");
 		out.println("<th class=\"text-center\">시즌</th>");
 		out.println("</thead>");
 		while(rs.next()){
@@ -122,5 +125,56 @@
 		out.println("</table>");
 	%>
   	</div>
+  	<div class="modal fade" id="AddMenuModal" tabindex="-1" aria-labelledby="AddMenuModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+	  		<div class="modal-content">
+	      		<div class="modal-header">
+	        		<h5 class="modal-title" id="AddMenuModalLabel">메뉴 추가</h5>
+	        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      		</div>
+				<div class="modal-body">
+        		<%
+					// 수정할 수 없는 거는 readonly로
+					out.println("<form action=\"updateMenu.jsp\" method=\"POST\" accept-charset=\"utf-8\">");
+					out.println("<h5>메뉴 정보</h5>");
+        			out.println("<div class=\"form-floating mb-3\">");
+        			out.println("<input type=\"text\" id=\"floatingMname\" class=\"form-control\" name=\"mname\" placeholder=\"메뉴 이름\" required>");
+        			out.println("<label for=\"floatingMname\">메뉴 이름</label>");
+        			out.println("</div>");
+        			out.println("<div class=\"form-floating mb-3\">");
+        			out.println("<input type=\"number\" id=\"floatingQuantity\" class=\"form-control\" name=\"quantity\" placeholder=\"수량\" required>");
+        			out.println("<label for=\"floatingQuantity\">수량</label>");
+        			out.println("</div>");
+        			out.println("<div class=\"form-floating mb-3\">");
+        			out.println("<input type=\"text\" id=\"floatingIsMenuForMembership\" class=\"form-control\" name=\"isMenuForMembership\" placeholder=\"학생회비 납부자용 메뉴 여부\" required>");
+        			out.println("<label for=\"floatingIsMenuForMembership\">학생회비 납부자용 메뉴 여부</label>");
+        			out.println("</div>");
+        			out.println("<hr>");
+        			out.println("<h5>가게 정보</h5>");
+        			out.println("<div class=\"form-floating mb-3\">");
+        			out.println("<input type=\"text\" id=\"floatingStoreName\" class=\"form-control\" name=\"storeN\" placeholder=\"가게 이름\" required>");
+        			out.println("<label for=\"floatingStoreName\">가게 이름</label>");
+        			out.println("</div>");
+        			out.println("<div class=\"form-floating mb-3\">");
+        			out.println("<input type=\"text\" id=\"floatingStoreAddress\" class=\"form-control\" name=\"Address\" placeholder=\"가게 주소\">");
+        			out.println("<label for=\"floatingStoreAddress\">가게 주소</label>");
+        			out.println("</div>");
+        			out.println("<div class=\"form-floating mb-3\">");
+        			out.println("<input type=\"text\" id=\"floatinStorePhone\" class=\"form-control\" name=\"Phone\" placeholder=\"가게 전화번호\">");
+        			out.println("<label for=\"floatinStorePhone\">가게 전화번호</label>");
+        			out.println("</div>");
+        			out.println("<hr>");
+        			out.println("<h5>야식마차 정보</h5>");
+        			out.println("<div class=\"form-floating mb-3\">");
+        			out.println("<input type=\"text\" id=\"floatinSeasonId\" class=\"form-control\" name=\"seasonId\" placeholder=\"시즌\">");
+        			out.println("<label for=\"floatinSeasonId\">시즌</label>");
+        			out.println("</div>");
+					out.println("<button class=\"btn form-control formSubmitBtns\" id=\"commitBtn\" type=\"submit\">추가</button>");
+					out.println("</form>");
+	  			%>
+      			</div>
+    		</div>
+	  	</div>
+	</div>
 </body>
 </html>

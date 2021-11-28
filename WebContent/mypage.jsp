@@ -184,7 +184,7 @@ h3 {
 							if (isget.equals("X"))
 								out.println("<td class=\"text-center\" style=\"color: red\">작성 불가</td>");
 							else
-								out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn btn-primay\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\"><i class=\"fas fa-share\"></i></button></td>");
+								out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\"><i class=\"fas fa-share\"></i></button></td>");
 							out.println("</tr>");
 							cnt += 1;
 						} while(rs.next());
