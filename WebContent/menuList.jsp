@@ -180,6 +180,10 @@
         			out.println("</div>");
 					out.println("<button class=\"btn form-control formSubmitBtns\" id=\"commitBtn\" type=\"submit\">추가</button>");
 					out.println("</form>");
+
+					rs.close();
+					pstmt.close();
+					conn.close();
 	  			%>
       			</div>
     		</div>

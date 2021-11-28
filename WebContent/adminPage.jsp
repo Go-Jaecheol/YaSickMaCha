@@ -189,6 +189,11 @@
 			out.println("</tr>");
 		}
 		out.println("</table>");
+		
+		rsmd.close();
+		rs.close();
+		pstmt.close();
+		conn.close();
 	%>
 	</div>
 </body>

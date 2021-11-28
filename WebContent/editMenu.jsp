@@ -73,7 +73,7 @@
 	<%@ include file="./adminNavbar.jsp" %>
 	
 	<div id="form" class="container">
-		<form action="updateMenu.jsp?mid='<%=mid%>'" method="post" naccept-charset="utf-8">
+		<form action="updateMenu.jsp?mid='<%=mid%>'" method="post" accept-charset="utf-8">
 	      	<h3>메뉴 추가</h3>
 	      	<div class="form-floating mb-3">
 	      		<input type="text" id="floatingMname" class="form-control" name="mname" placeholder="메뉴이름"	 value=<%=rs.getString(1)%> required>
@@ -108,5 +108,10 @@
 	    	<button class="btn btn-primary" type="submit">확인</button>
 	  	</form>
   	</div>
+  	<%
+		rs.close();
+		pstmt.close();
+		conn.close();
+  	%>
 </body>
 </html>

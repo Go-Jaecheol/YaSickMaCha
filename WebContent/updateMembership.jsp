@@ -43,9 +43,15 @@
 			rs = pstmt.executeUpdate();
 			
 			conn.commit();
+			
+			pstmt.close();
+			conn.close();
 		} catch(Exception e){
 			e.printStackTrace();
 			conn.rollback(); // 실패시 롤백
+			
+			pstmt.close();
+			conn.close();
 		}
 		
 	%>

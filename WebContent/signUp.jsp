@@ -48,20 +48,16 @@ pageEncoding="UTF-8" import="java.text.*, java.sql.*"%>
 			res=pstmt.executeUpdate();
 			response.sendRedirect("main.jsp");
 		}
-		else { %>
-			<!-- 이미 가입된 학번, 비밀번호가 있는 경우
-			<div id="alreadyAlert"></div>
+		else {// 이미 가입된 학번, 비밀번호가 있는 경우 %>
 			<script>
-				$('#alreadyAlert').click(function () {
-					var wrapper = document.createElement('div')
-					wrapper.innerHTML = '<div class="alert alert-danger alert-dismissible" role="alert">이미 등록된 학생입니다. Sign In 해주시기 바랍니다.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-		
-		     		alreadyAlert.append(wrapper)
-				})
-				document.location.href="./index.html";
+			// 이미 가입된 학번, 비밀번호가 있는 경우
+				alert("이미 계정이 존재합니다!");
+				document.location.href="index.jsp";
 			</script>
-			-->
-		<% } 
+		<% }
+		rs.close();
+		pstmt.close();
+		conn.close();
 		%>
 </body>
 </html>

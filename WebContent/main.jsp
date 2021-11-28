@@ -226,6 +226,7 @@ h1 {
 		}
 		rs.close();
 		pstmt.close();
+		conn.close();
 	%>
 	
 	<!-- Duplicated Alert -->

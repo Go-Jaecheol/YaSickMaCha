@@ -181,8 +181,9 @@
 			}
 		}
 		
-		
-		
+		rs.close();
+		pstmt.close();
+		conn.close();
 	%>
 	
 	<% if(cnt == 0){ %>

@@ -94,6 +94,7 @@
 				conn.rollback();
 				rs.close();
 				pstmt.close();
+				conn.close();
 				%>
 				<script>
 					alert("남은 수량이 없습니다!");
