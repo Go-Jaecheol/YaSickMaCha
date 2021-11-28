@@ -51,6 +51,31 @@
 		if (document.getElementById("ratingHelp").style.display != 'flex' && document.getElementById("commentsHelp").style.display != 'flex')
 			document.getElementById("reviewBtn").disabled = false;
 	}
+	$(document).ready(function() {
+        $("#ReviewModal").on("show.bs.modal", function(e) {
+        	var mname = $(e.relatedTarget).data('mname');
+            $('input[name=mname]').attr('value',mname);
+        });
+    });
+	$(document).ready(function() {
+        $("#ShowReviewModal").on("show.bs.modal", function(e) {
+        	var mname = $(e.relatedTarget).data('mname');
+        	var rating = $(e.relatedTarget).data('rating');
+        	var comm = $(e.relatedTarget).data('comm');
+        	var mid = $(e.relatedTarget).data('mid');
+        	
+        	console.log(mid);
+        	document.getElementById("ModalMessage").innerHTML = mname;
+        	var innerHtml="";
+			for(var i=0; i<5; i++) {  
+				if(i < rating) innerHtml += "★";
+				else innerHtml += "☆";
+			} 
+			document.getElementById("ModalRating").innerHTML = innerHtml;
+			document.getElementById("ModalComment").innerHTML = comm;
+			$('input[name=mid]').attr('value',mid);
+        });
+    });
 </script>  
 <style type="text/css">
 body {
@@ -183,13 +208,42 @@ h3 {
 							out.println("<td class=\"text-center\">" + isget + "</td>");
 							if (isget.equals("X"))
 								out.println("<td class=\"text-center\" style=\"color: red\">작성 불가</td>");
-							else
-								out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\"><i class=\"fas fa-share\"></i></button></td>");
+							else {
+								query = "SELECT m.Mname, m.Mid, r.Rating, r.Comments "
+										+ "FROM SMENU_LIST s, MENU m, Rating r " 
+										+ "WHERE s.Sid = ? AND m.Mid = r.MenuId AND s.Mid = m.Mid AND s.Sid = r.StudentId AND s.IsGet = 'Y'";
+								pstmt=conn.prepareStatement(query);
+								pstmt.setString(1, sid);
+								ResultSet rs_temp = pstmt.executeQuery();
+								boolean isDuplicated = false;
+								
+								if (!rs_temp.next())
+									out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\" data-mname=\""+mname+"\" ><i class=\"fas fa-share\"></i></button></td>");
+								else {
+									do {
+										String rs_mname = rs_temp.getString(1);
+										String rs_mid = rs_temp.getString(2);
+										int rs_rating = rs_temp.getInt(3);
+										String rs_comm = rs_temp.getString(4);
+										if (rs_mname.equals(mname)) {
+											isDuplicated = true;
+											out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn\" data-bs-toggle=\"modal\" data-bs-target=\"#ShowReviewModal\" data-mname=\""+rs_mname+"\" data-rating=\""+rs_rating+"\" data-comm=\""+rs_comm+"\" data-mid=\""+rs_mid+"\"><i class=\"fas fa-share\"></i></button></td>");
+											break;
+										}
+									}while(rs_temp.next());
+									if (!isDuplicated)
+										out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\" data-mname=\""+mname+"\" ><i class=\"fas fa-share\"></i></button></td>");
+								}
+								rs_temp.close();
+							}
 							out.println("</tr>");
 							cnt += 1;
 						} while(rs.next());
 						out.println("</table");
 					}
+					rs.close();
+	  				pstmt.close();
+	  				conn.close();
 				%>
 			</div>
 		</div>
@@ -249,57 +303,53 @@ h3 {
 		      		</div>
 					<div class="modal-body">
 	        		<%
-		        		query = "SELECT m.Mid, r.Rating, r.Comments "
-								+ "FROM SMENU_LIST s, MENU m, Rating r " 
-								+ "WHERE s.Sid = ? AND m.Mid = r.MenuId AND s.Mid = m.Mid AND s.Sid = r.StudentId AND s.IsGet = 'Y'";
-						pstmt=conn.prepareStatement(query);
-						pstmt.setString(1, sid);
-						rs = pstmt.executeQuery();
-						// 남긴 후기가 있는 경우, 그 후기를 보여주고 그렇지 않은 경우 후기 작성 form
-						if (!rs.next()) {
-							out.println("<form action=\"ratingInsert.jsp\" method=\"POST\">");
-							out.println("<h3 class=\"formTitle\">리뷰 작성하기</h3>");
-							out.println("<div class=\"form-floating mb-3\">");
-							out.println("<input type=\"text\" id=\"floatingMname\" class=\"form-control\" name=\"mname\" value=\"" + mname + "\" readonly>");
-							out.println("<label for=\"floatingMname\">메뉴 이름</label>");
-							out.println("</div>");
-							out.println("<div class=\"form-floating mb-3\">");
-							out.println("<input type=\"number\" id=\"floatingRating\" class=\"form-control\" name=\"rating\" value=5 max=5 min=0 oninput=\"ValidRating(this)\" required>");
-							out.println("<label for=\"floatingRating\">별점</label>");
-							out.println("<div id=\"ratingHelp\" class=\"invalid-feedback\">0 ~ 5 사이의 1점 단위로 작성해주세요.</div>");
-							out.println("</div>");
-							out.println("<div class=\"form-floating mb-3\">");
-							out.println("<textarea id=\"floatingComments\" class=\"form-control\" name=\"comments\" oninput=\"ValidRating(this)\" style=\"height: 100px\"></textarea>");
-							out.println("<label for=\"floatingComments\">후기</label>");
-							out.println("<div id=\"commentsHelp\" class=\"invalid-feedback\">75자 이내로 작성해주세요.</div>");
-							out.println("</div>");
-							out.println("<button class=\"btn form-control modalBtns\" id=\"reviewBtn\" type=\"submit\">작성 완료</button>");
-							out.println("</form>");
-							out.println("</div>");
-		      			}
-						else {
-							out.println("<h3>" + mname + "에 대한 리뷰</h3>");
-							mid = rs.getString(1);
-							rating = rs.getInt(2);
-							comm = rs.getString(3);
-							out.println("<h4>별점</h4>");
-							String innerHtml="";
-							for(int i=0; i<5; i++) {  
-							  if(i < rating) innerHtml += "★";
-							  else innerHtml += "☆";
-							} 
-							out.println(innerHtml);
-							out.println("<h4>남긴 후기</h4>");
-							out.println(comm);
-							out.println("</div>");
-							out.println("<div class=\"modal-footer\">");
-							out.println("<button type=\"button\" class=\"btn btn-danger\" onclick=\"location.href='ratingDelete.jsp?mid=" + mid + "'\"><i class=\"fas fa-trash-alt\"></i></button>");
-							out.println("</div>");
-						}
-		  				rs.close();
-		  				pstmt.close();
-		  				conn.close();
+		        		out.println("<form action=\"ratingInsert.jsp\" method=\"POST\">");
+						out.println("<h3 class=\"formTitle\">리뷰 작성하기</h3>");
+						out.println("<div class=\"form-floating mb-3\">");
+					%>
+						<input type="text" id="floatingMname" class="form-control" name="mname" value="" readonly>
+					<% 
+						out.println("<label for=\"floatingMname\">메뉴 이름</label>");
+						out.println("</div>");
+						out.println("<div class=\"form-floating mb-3\">");
+						out.println("<input type=\"number\" id=\"floatingRating\" class=\"form-control\" name=\"rating\" value=5 max=5 min=0 oninput=\"ValidRating(this)\" required>");
+						out.println("<label for=\"floatingRating\">별점</label>");
+						out.println("<div id=\"ratingHelp\" class=\"invalid-feedback\">0 ~ 5 사이의 1점 단위로 작성해주세요.</div>");
+						out.println("</div>");
+						out.println("<div class=\"form-floating mb-3\">");
+						out.println("<textarea id=\"floatingComments\" class=\"form-control\" name=\"comments\" oninput=\"ValidRating(this)\" style=\"height: 100px\"></textarea>");
+						out.println("<label for=\"floatingComments\">후기</label>");
+						out.println("<div id=\"commentsHelp\" class=\"invalid-feedback\">75자 이내로 작성해주세요.</div>");
+						out.println("</div>");
+						out.println("<button class=\"btn form-control modalBtns\" id=\"reviewBtn\" type=\"submit\">작성 완료</button>");
+						out.println("</form>");
+						out.println("</div>");
 		  			%>
+    				</div>
+		  		</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="ShowReviewModal" tabindex="-1" aria-labelledby="ShowReviewModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+		  		<div class="modal-content">
+		      		<div class="modal-header">
+		        		<h5 class="modal-title" id="ShowReviewModalLabel">Review</h5>
+		        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      		</div>
+					<div class="modal-body">
+							<h3 id="ModalMessage"></h3>
+							<h4>별점</h4>
+							<p id="ModalRating"></p>
+							<h4>남긴 후기</h4>
+							<p id="ModalComment"></p>
+							</div>
+							<div class="modal-footer">
+							<form action="ratingDelete.jsp" method="POST">
+							<input type="hidden" id="floatingMname" class="form-control" name="mid" value="" readonly>
+							<button type="submit" class="btn form-control btn-danger" id="deleteBtn"><i class="fas fa-trash-alt"></i></button>
+							</form>
+							</div>
     				</div>
 		  		</div>
 			</div>
