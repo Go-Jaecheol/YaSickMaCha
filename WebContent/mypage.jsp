@@ -337,19 +337,19 @@ h3 {
 		        		<h5 class="modal-title" id="ShowReviewModalLabel">Review</h5>
 		        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      		</div>
-					<div class="modal-body">
-							<h3 id="ModalMessage"></h3>
-							<h4>별점</h4>
-							<p id="ModalRating"></p>
-							<h4>남긴 후기</h4>
-							<p id="ModalComment"></p>
-							</div>
-							<div class="modal-footer">
-							<form action="ratingDelete.jsp" method="POST">
+					<div class="modal-body text-center">
+						<h3 id="ModalMessage"></h3>
+						<h4>별점</h4>
+						<p id="ModalRating"></p>
+						<h4>남긴 후기</h4>
+						<p id="ModalComment"></p>
+					</div>
+						<div class="modal-footer">
+						<form action="ratingDelete.jsp" method="POST">
 							<input type="hidden" id="floatingMname" class="form-control" name="mid" value="" readonly>
 							<button type="submit" class="btn form-control btn-danger" id="deleteBtn"><i class="fas fa-trash-alt"></i></button>
-							</form>
-							</div>
+						</form>
+						</div>
     				</div>
 		  		</div>
 			</div>
