@@ -54,7 +54,9 @@
 	$(document).ready(function() {
         $("#ReviewModal").on("show.bs.modal", function(e) {
         	var mname = $(e.relatedTarget).data('mname');
+        	var mid = $(e.relatedTarget).data('mid');
             $('input[name=mname]').attr('value',mname);
+            $('input[name=mid]').attr('value',mid);
         });
     });
 	$(document).ready(function() {
@@ -159,7 +161,7 @@ h3 {
   			</div>
 			<div class="tab-pane fade" id="nav-menu" role="tabpanel" aria-labelledby="nav-menu-tab">
 				<% 
-					query = "SELECT m.SeasonId, m.StoreN, m.Mname, s.IsGet "
+					query = "SELECT m.SeasonId, m.StoreN, m.Mname, m.Mid, s.IsGet "
 							+ "FROM SMENU_LIST s, MENU m " 
 							+ "WHERE s.Sid = ? AND s.Mid = m.Mid ORDER BY s.IsGet";
 					pstmt=conn.prepareStatement(query);
@@ -183,6 +185,7 @@ h3 {
 							season = rs.getString(1);
 							storen = rs.getString(2);
 							mname = rs.getString(3);
+							mid = rs.getString(4);
 							isget = (rs.getString(4).equals("N") ? "X" : "O");
 							out.println("<td class=\"text-center\">" + season + "</td>");
 							out.println("<td class=\"text-center\">" + storen + "</td>");
@@ -200,21 +203,21 @@ h3 {
 								boolean isDuplicated = false;
 								
 								if (!rs_temp.next())
-									out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\" data-mname=\""+mname+"\" ><i class=\"fas fa-share\"></i></button></td>");
+									out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\" data-mname=\""+mname+"\" data-mid=\""+mid+"\"><i class=\"fas fa-share\"></i></button></td>");
 								else {
 									do {
 										String rs_mname = rs_temp.getString(1);
 										String rs_mid = rs_temp.getString(2);
 										int rs_rating = rs_temp.getInt(3);
 										String rs_comm = rs_temp.getString(4);
-										if (rs_mname.equals(mname)) {
+										if (rs_mid.equals(mid)) {
 											isDuplicated = true;
 											out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn\" data-bs-toggle=\"modal\" data-bs-target=\"#ShowReviewModal\" data-mname=\""+rs_mname+"\" data-rating=\""+rs_rating+"\" data-comm=\""+rs_comm+"\" data-mid=\""+rs_mid+"\"><i class=\"fas fa-share\"></i></button></td>");
 											break;
 										}
 									}while(rs_temp.next());
 									if (!isDuplicated)
-										out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\" data-mname=\""+mname+"\" ><i class=\"fas fa-share\"></i></button></td>");
+										out.println("<td class=\"text-center\"><button type=\"button\" style=\"padding: 0;\" class=\"btn\" data-bs-toggle=\"modal\" data-bs-target=\"#ReviewModal\" data-mname=\""+mname+"\" data-mid=\""+mid+"\"><i class=\"fas fa-share\"></i></button></td>");
 								}
 								rs_temp.close();
 							}
@@ -289,6 +292,7 @@ h3 {
 						out.println("<h3 class=\"formTitle\">리뷰 작성하기</h3>");
 						out.println("<div class=\"form-floating mb-3\">");
 					%>
+						<input type="hidden" id="floatingMname" class="form-control" name="mid" value="" readonly>
 						<input type="text" id="floatingMname" class="form-control" name="mname" value="" readonly>
 					<% 
 						out.println("<label for=\"floatingMname\">메뉴 이름</label>");

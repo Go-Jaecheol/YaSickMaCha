@@ -68,6 +68,7 @@
 				pstmt.setString(2, "N");
 				pstmt.setString(3, menu_id);
 				res = pstmt.executeUpdate();
+				Thread.sleep(3000); // 3초 sleep
 			    conn.commit();
 			    rs.close();
 				pstmt.close();
@@ -82,6 +83,7 @@
 				</script>
 				<%
 			} else {
+				Thread.sleep(3000); // 3초 sleep
 				conn.rollback();
 				rs.close();
 				pstmt.close();

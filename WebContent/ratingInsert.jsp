@@ -22,7 +22,7 @@
 		String pass = "db11";	//1234
 		String url = "jdbc:oracle:thin:@" + serverIP + ":" + portNum + ":" + strSID;
 		String query;
-		String sid=user_id, mname=request.getParameter("mname"), mid="", comments="";
+		String sid=user_id, mname=request.getParameter("mname"), mid=request.getParameter("mid"), comments="";
 		int res, rating=0, count=0;
 		Connection conn=null;
 		PreparedStatement pstmt;
@@ -33,16 +33,6 @@
 		conn.setAutoCommit(false);
 		
 		try {
-			// 후기 작성하려는 메뉴 정보를 불러와야 함
-			query = "SELECT Mid "
-					+ "FROM MENU "
-					+ "WHERE Mname = ?";
-			pstmt=conn.prepareStatement(query);
-			pstmt.setString(1, mname);
-			rs=pstmt.executeQuery();
-			
-			if (rs.next()) {
-				mid=rs.getString(1);
 				// 준비 끝 transaction 시작
 				query = "SELECT * "
 						+ "FROM RATING "
@@ -86,7 +76,7 @@
 						alert("이미 작성했습니다.");
 					</script>
 				<%}
-			}
+			
 			rs.close();
 			pstmt.close();
 			conn.close();
