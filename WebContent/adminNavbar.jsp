@@ -9,7 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-<link rel="stylesheet" href="./css/global.css">
+<link rel="stylesheet" href="./style/global.css?after">
 <style type="text/css">
 #admin_nav {
 	background-color: #efeeee;
