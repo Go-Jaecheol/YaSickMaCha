@@ -87,8 +87,15 @@
 				        pstmt.setInt(4, rating);
 				        pstmt.setString(5, comments);
 				        res=pstmt.executeUpdate();
+				        
+				        Thread.sleep(3000); // 3초 sleep
 						conn.commit();
-					}
+				        
+				        %>
+				        <script>
+				        	alert("후기 작성 완료");
+				        </script>
+					<%}
 					else { // 작성한 게 있다는 의미
 						conn.rollback(); %>
 						<script>

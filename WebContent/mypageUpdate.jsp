@@ -49,11 +49,11 @@
 		conn.close();
 		%>
 		<script>
-			var r = <%= res %>;
-			var url = 'mypage.jsp?isUp=' + encodeURI(r);
-			window.location.href = url;
+			alert("수정 완료!");
+			document.location.href = "mypage.jsp";
+			//response.sendRedirect("mypage.jsp");
 		</script>
-		<% // response.sendRedirect("mypage.jsp");
+		<%
 	%>
 </body>
 </html>

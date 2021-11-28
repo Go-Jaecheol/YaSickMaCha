@@ -130,8 +130,7 @@ h3 {
   				<% }
 	  			else {
 	  				String rtn = request.getParameter("isUp");
-	  				if (rtn != null && Integer.parseInt(rtn) >= 0)%> <script></script>
-	  				<% sid = rs.getString(1);
+	  				sid = rs.getString(1);
 	  				phone = rs.getString(2);
 	  				mem = (rs.getString(3).equals("N") ? "X" : "O");
 	  				int d = rs.getInt(4);
@@ -155,7 +154,7 @@ h3 {
 				<% 
 					query = "SELECT m.SeasonId, m.StoreN, m.Mname, s.IsGet "
 							+ "FROM SMENU_LIST s, MENU m " 
-							+ "WHERE s.Sid = ? AND s.Mid = m.Mid";
+							+ "WHERE s.Sid = ? AND s.Mid = m.Mid ORDER BY s.IsGet";
 					pstmt=conn.prepareStatement(query);
 					pstmt.setString(1, sid);
 					rs = pstmt.executeQuery();

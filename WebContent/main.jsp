@@ -9,7 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/global.css?after">
 <script type="text/javascript">
     $(document).ready(function() {
         $("#MenuRequestModal").on("show.bs.modal", function(e) {
@@ -21,12 +21,7 @@
     });
 </script>
 <style type="text/css">
-html {
-	height: 100%;
-}
 body {
-	margin: 0;
-	height: 100%;
 	text-align: center;
 }
 h1 {
@@ -63,6 +58,9 @@ h1 {
 	cursor: pointer;
 	border-radius: 5px;
 	box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
+}
+#reviewBtn {
+	display: block;
 }
 </style>
 <title>YSMC</title>
@@ -207,7 +205,7 @@ h1 {
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="modalLabel">Alert</h5>
+	        <h5 class="modal-title" id="modalLabel">알림</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
@@ -224,7 +222,7 @@ h1 {
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="modalLabel">Alert</h5>
+	        <h5 class="modal-title" id="modalLabel">알림</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
@@ -238,24 +236,23 @@ h1 {
 	</div>
 	<!-- Menu Request Modal -->
 	<div class="modal fade" id="MenuRequestModal" tabindex="-1" aria-labelledby="MenuRequestModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-		  		<div class="modal-content">
-		      		<div class="modal-header">
-		        		<h5 class="modal-title" id="MenuRequestModalLabel">메뉴 신청</h5>
-		        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		      		</div>
-					<div class="modal-body">
-						<form action="menuInfoUpdate.jsp" method="POST">
+		<div class="modal-dialog modal-dialog-centered">
+	  		<div class="modal-content">
+	      		<div class="modal-header">
+	        		<h5 class="modal-title" id="MenuRequestModalLabel">메뉴 신청</h5>
+	        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      		</div>
+				<div class="modal-body">
+					<form action="menuInfoUpdate.jsp" method="POST">
 						<h5 id=ModalMessage>해당 메뉴를 신청하시겠습니까?</h5>
 						<input type="hidden" id="floatingMid" class="form-control" name="mid" value="">
-						<button class="btn btn-outline-primary form-control" id="reviewBtn" type="submit">신청 완료</button>
-						</form>
-						</div>
-	        		
-    				</div>
-		  		</div>
+						<button class="btn form-control formSubmitBtns" id="reviewBtn" type="submit">신청 완료</button>
+					</form>
+				</div>
 			</div>
+  		</div>
 	</div>
+</div>
 </div>
 </body>
 </html>
