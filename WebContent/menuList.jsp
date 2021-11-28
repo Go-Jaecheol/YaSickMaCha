@@ -12,18 +12,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="./css/global.css?after">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <style type="text/css">
 	#controlBar {
 		width: 90%;
     	margin: 5px auto;
+		display: flex;
+		margin-top: 50px;
+		height: 10%;
+		padding-bottom: 20px;
+		border-radius: 10px;
+		box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
+		justify-content: space-between;
+		align-items: center;
 	}
-	
 	#formDiv {
 		float : left;
 	}
-	
 	#buttonDiv {
 		float : right;
 	}
@@ -53,7 +60,7 @@
 	%>
 	
 	<%@ include file="./adminNavbar.jsp" %>
-	<div id="controlBar">
+	<div id="controlBar" class="container">
 		<div id="formDiv">
 			<form action="menuList.jsp" method="post" accept-charset="utf-8">
 		      	<input name="input" type="text" />
@@ -62,15 +69,15 @@
 			        <option value="storeN">가게이름</option>
 			        <option value="seasonId">시즌</option>
 		     	</select>
-		    	<button class="btn btn-primary" type="submit">검색</button>
+		    	<button class="btn formSubmitBtns" type="submit">검색</button>
 	  		</form>
 		</div>
 	  	<div id="buttonDiv">
-	  		<button class="btn btn-primary" onclick="location.href = 'addMenu.jsp'">메뉴추가</button>
+	  		<button class="btn adminBtns" onclick="location.href = 'addMenu.jsp'">메뉴추가</button>
 	  	</div>
   	</div>
-  
-	<%
+  	<div id="menuList" class="container">
+  	<%
 		query = "select * from menu";
 	
 		String section="";
@@ -97,22 +104,23 @@
 		rs=pstmt.executeQuery();
 		out.println("<table class='table table-striped'>");
 		out.println("<thead>");
-		out.println("<th>메뉴이름</th>");
-		out.println("<th>수량</th>");
-		out.println("<th>학생회비납부자용메뉴여부</th>");
-		out.println("<th>가게이름</th>");
-		out.println("<th>시즌</th>");
+		out.println("<th class=\"text-center\">메뉴이름</th>");
+		out.println("<th class=\"text-center\">수량</th>");
+		out.println("<th class=\"text-center\">학생회비 납부자용 메뉴 여부</th>");
+		out.println("<th class=\"text-center\">가게이름</th>");
+		out.println("<th class=\"text-center\">시즌</th>");
 		out.println("</thead>");
 		while(rs.next()){
 			out.println("<tr>");
-			out.println("<td><a href = 'editMenu.jsp?mid=" +rs.getString(1)+ "'>"+ rs.getString(2) +"</a></td>");
-			out.println("<td>"+rs.getString(3)+"</td>");
-			out.println("<td>"+rs.getString(4)+"</td>");
-			out.println("<td>"+rs.getString(5)+"</td>");
-			out.println("<td>"+rs.getString(6)+"</td>");
+			out.println("<td class=\"text-center\"><a href = 'editMenu.jsp?mid=" +rs.getString(1)+ "'>"+ rs.getString(2) +"</a></td>");
+			out.println("<td class=\"text-center\">"+rs.getString(3)+"</td>");
+			out.println("<td class=\"text-center\">"+(rs.getString(4).equals("N") ? "X" : "O")+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(5)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(6)+"</td>");
 			out.println("</tr>");
 		}
 		out.println("</table>");
 	%>
+  	</div>
 </body>
 </html>

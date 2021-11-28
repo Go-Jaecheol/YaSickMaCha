@@ -13,9 +13,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/global.css?after">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
-
+<style type="text/css">
+	.transpose { width: 100%; }
+	.transpose tr { display: block; float: left; }
+	.transpose th { display: block; }
+	.transpose td { display: block; }
+	#stdDetailBar {
+		width: 90%;
+		margin: 5px auto;
+	}
+</style>
 <title>YSMC</title>
 </head>
 <body>
@@ -42,7 +52,7 @@
 	%>
 	
 	<%@ include file="./adminNavbar.jsp" %>
-  
+  		<div id="stdDetailBar" class="container">
 	<%
 		sid = request.getParameter("sid");
 		System.out.println(sid);
@@ -61,17 +71,17 @@
 		int cnt = rsmd.getColumnCount();
 		out.println("<thead>");
 		for(int i=1; i<=cnt; i++){
-			out.println("<th>"+rsmd.getColumnName(i)+"</th>");
+			out.println("<th class=\"text-center\">"+rsmd.getColumnName(i)+"</th>");
 		}
 		out.println("</thead>");
 		while(rs.next()){
 			out.println("<tr>");
-			out.println("<td>"+rs.getString(1)+"</td>");
-			out.println("<td>"+rs.getString(2)+"</td>");
-			out.println("<td>"+rs.getString(3)+"</td>");
-			out.println("<td>"+rs.getString(4)+"</td>");
-			out.println("<td><button onclick=\"location.href = 'updateMembership.jsp?sid="+sid+"&membership="+rs.getString(5)+"'"+"\""+">"+rs.getString(5)+"</button></td>");
-			out.println("<td>"+rs.getString(6)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(1)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(2)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(3)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(4)+"</td>");
+			out.println("<td class=\"text-center\"><button class=\"adminBtns\" onclick=\"location.href = 'updateMembership.jsp?sid="+sid+"&membership="+rs.getString(5)+"'"+"\""+">"+rs.getString(5)+"</button></td>");
+			out.println("<td class=\"text-center\">"+rs.getString(6)+"</td>");
 			out.println("</tr>");
 		}
 		out.println("</table>");
@@ -93,16 +103,16 @@
 		cnt = rsmd.getColumnCount();
 		out.println("<thead>");
 		
-		out.println("<th>메뉴</th>");
-		out.println("<th>시즌</th>");
-		out.println("<th>수령여부</th>");
+		out.println("<th class=\"text-center\">메뉴</th>");
+		out.println("<th class=\"text-center\">시즌</th>");
+		out.println("<th class=\"text-center\">수령여부</th>");
 		
 		out.println("</thead>");
 		while(rs.next()){
 			out.println("<tr>");
-			out.println("<td>"+rs.getString(1)+"</td>");
-			out.println("<td>"+rs.getString(2)+"</td>");
-			out.println("<td><button onclick=\"location.href = 'updateIsGet.jsp?sid="+sid+"&mid="+rs.getString(4)+"&isGet="+rs.getString(3)+"&membership="+rs.getString(5)+"'"+"\""+">"+rs.getString(3)+"</button></td>");
+			out.println("<td class=\"text-center\">"+rs.getString(1)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(2)+"</td>");
+			out.println("<td class=\"text-center\"><button class=\"adminBtns\" onclick=\"location.href = 'updateIsGet.jsp?sid="+sid+"&mid="+rs.getString(4)+"&isGet="+rs.getString(3)+"&membership="+rs.getString(5)+"'"+"\""+">"+rs.getString(3)+"</button></td>");
 			out.println("</tr>");
 		}
 		out.println("</table>");
@@ -123,17 +133,18 @@
 		cnt = rsmd.getColumnCount();
 		out.println("<thead>");
 		for(int i=1; i<=cnt; i++){
-			out.println("<th>"+rsmd.getColumnName(i)+"</th>");
+			out.println("<th class=\"text-center\">"+rsmd.getColumnName(i)+"</th>");
 		}
 		out.println("</thead>");
 		while(rs.next()){
 			out.println("<tr>");
-			out.println("<td>"+rs.getString(1)+"</td>");
-			out.println("<td>"+rs.getString(2)+"</td>");
-			out.println("<td>"+rs.getString(3)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(1)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(2)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(3)+"</td>");
 			out.println("</tr>");
 		}
 		out.println("</table>");
 	%>
+  		</div>
 </body>
 </html>

@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="css/bootstrap.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
+<link rel="stylesheet" href="css/global.css?after">
 <style type="text/css">
 	.transpose { width: 100%; }
 	.transpose tr { display: block; float: left; }
@@ -24,6 +25,14 @@
 	#controlBar {
 		width: 90%;
     	margin: 5px auto;
+		display: flex;
+		margin-top: 50px;
+		height: 10%;
+		padding-bottom: 20px;
+		border-radius: 10px;
+		box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
+		justify-content: space-between;
+		align-items: center;
 	}
 </style>
 <title>YSMC</title>
@@ -116,8 +125,8 @@
 	
 	<%@ include file="./adminNavbar.jsp" %>
 
-	<div id ="controlBar">
-		<form action="adminPage.jsp" method="post" naccept-charset="utf-8">
+	<div id ="controlBar" class="container">
+		<form action="adminPage.jsp" method="post" accept-charset="utf-8">
 	      	<input name="input" type="text" />
 	      	<select name="section">
 		        <option value="sid" selected>학번</option>
@@ -140,11 +149,11 @@
 			out.println("<option value='"+rs.getString(1)+"'>"+rs.getString(2)+"</option>");
 		}
 		out.println("</select>");
-		out.println("<button class='btn btn-primary' type='submit'>확인</button>");
+		out.println("<button class='btn formSubmitBtns' type='submit'>확인</button>");
 		out.println("</form>");
 	%>
 	</div>
-	
+	<div id="menuList" class="container">
 	<%
 		pstmt=conn.prepareStatement(finalQuery);	
 		rs=pstmt.executeQuery();
@@ -153,21 +162,22 @@
 		int cnt = rsmd.getColumnCount();
 		out.println("<thead>");
 		for(int i=1; i<cnt; i++){
-			out.println("<th>"+rsmd.getColumnName(i)+"</th>");
+			out.println("<th class=\"text-center\">"+rsmd.getColumnName(i)+"</th>");
 		}
 		out.println("</thead>");
 		
 		while(rs.next()){
 			out.println("<tr>");
-			out.println("<td>"+rs.getString(1)+"</td>");		
-			out.println("<td><a href = 'studentDetail.jsp?sid=" +rs.getString(1)+ "'>"+ rs.getString(2) +"</a></td>");
-			out.println("<td>"+rs.getString(3)+"</td>");
-			out.println("<td>"+rs.getString(4)+"</td>");
-			out.println("<td>"+rs.getString(5)+"</td>");
-			out.println("<td><button onclick=\"location.href = 'updateIsGet.jsp?sid="+rs.getString(1)+"&mid="+rs.getString(4)+"&isGet="+rs.getString(6)+"&membership="+rs.getString(7)+"'"+"\""+">"+rs.getString(6)+"</button></td>");
+			out.println("<td class=\"text-center\">"+rs.getString(1)+"</td>");		
+			out.println("<td class=\"text-center\"><a href = 'studentDetail.jsp?sid=" +rs.getString(1)+ "'>"+ rs.getString(2) +"</a></td>");
+			out.println("<td class=\"text-center\">"+rs.getString(3)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(4)+"</td>");
+			out.println("<td class=\"text-center\">"+rs.getString(5)+"</td>");
+			out.println("<td class=\"text-center\"><button class=\"adminBtns\" onclick=\"location.href = 'updateIsGet.jsp?sid="+rs.getString(1)+"&mid="+rs.getString(4)+"&isGet="+rs.getString(6)+"&membership="+rs.getString(7)+"'"+"\""+">"+rs.getString(6)+"</button></td>");
 			out.println("</tr>");
 		}
 		out.println("</table>");
 	%>
+	</div>
 </body>
 </html>
