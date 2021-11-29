@@ -217,7 +217,7 @@
         			out.println("<hr>");
         			out.println("<h5>야식마차 정보</h5>");
         			out.println("<div class=\"form-floating mb-3\">");
-        			out.println("<input type=\"text\" id=\"floatinSeasonId\" class=\"form-control\" name=\"add_seasonId\" placeholder=\"시즌\">");
+        			out.println("<input type=\"text\" id=\"floatinSeasonId\" class=\"form-control\" name=\"add_seasonId\" placeholder=\"시즌\" required>");
         			out.println("<label for=\"floatinSeasonId\">시즌</label>");
         			out.println("</div>");
 					out.println("<button class=\"btn form-control formSubmitBtns\" id=\"commitBtn\" type=\"submit\">추가</button>");
@@ -269,7 +269,7 @@
 				      	</div>
 				      	<hr>
 				      	<div class="form-floating mb-3">
-				      		<input type="text" id="floatinSeasonId" class="form-control" name="seasonId" value="" placeholder="시즌">
+				      		<input type="text" id="floatinSeasonId" class="form-control" name="seasonId" value="" placeholder="시즌" required>
 							<label for="floatinSeasonId">시즌</label>
 				      	</div>
 				    	<button class="btn form-control formSubmitBtns" type="submit">확인</button>
