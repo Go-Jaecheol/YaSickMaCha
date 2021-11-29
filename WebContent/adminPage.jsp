@@ -92,7 +92,7 @@
 				seasonId = seasonId.substring(0,5)+'F';
 		}
 	
-		finalQuery = "select s.sid as 학번, s.sname as 이름, s.phone as 휴대전화, m.mid as 메뉴번호, m.mname as 메뉴, l.isget as 수령여부, m.IsMenuForMembership as 멤버십 "
+		finalQuery = "select s.sid as 학번, s.sname as 이름, s.phone as 휴대폰, m.mid as 메뉴번호, m.mname as 메뉴, l.isget as 수령여부, m.IsMenuForMembership as 멤버십 "
 				+ "from student s, menu m, SMENU_LIST l "
 				+ "where s.sid = l.sid and l.mid = m.mid and m.SeasonId = '"+seasonId+"'";
 	

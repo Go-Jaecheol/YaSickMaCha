@@ -57,7 +57,7 @@
 		sid = request.getParameter("sid");
 		System.out.println(sid);
 		
-		query = "select sid as 학번, pwd as 비밀번호, Sname as 이름, phone as 휴대전화, Membership as 학생회비납부여부, dname as 전공 "
+		query = "select sid as 학번, pwd as 비밀번호, Sname as 이름, phone as 휴대폰, Membership as 학생회비납부여부, dname as 전공 "
 				+ "from student, DEPARTMENT "
 				+ "where dnumber=dno and sid ='"+sid+"'";
 	
@@ -104,8 +104,8 @@
 		out.println("<thead>");
 		
 		out.println("<th class=\"text-center\">메뉴</th>");
-		out.println("<th class=\"text-center\">시즌</th>");
-		out.println("<th class=\"text-center\">수령여부</th>");
+		out.println("<th class=\"text-center\">야식마차 시즌</th>");
+		out.println("<th class=\"text-center\">수령 여부</th>");
 		
 		out.println("</thead>");
 		while(rs.next()){
@@ -133,7 +133,19 @@
 		cnt = rsmd.getColumnCount();
 		out.println("<thead>");
 		for(int i=1; i<=cnt; i++){
-			out.println("<th class=\"text-center\">"+rsmd.getColumnName(i)+"</th>");
+			String attr=rsmd.getColumnName(i);
+			switch (attr) {
+			case "MNAME":
+				attr = "메뉴";
+				break;
+			case "RATING":
+				attr = "별점";
+				break;
+			case "COMMENTS":
+				attr = "후기";
+				break;
+			}
+			out.println("<th class=\"text-center\">"+attr+"</th>");
 		}
 		out.println("</thead>");
 		while(rs.next()){

@@ -153,7 +153,7 @@ h3 {
 	  				out.println("<dd class=\"col-sm-6 text-center\">" + phone + "</dd>");
 	  				out.println("<dt class=\"col-sm-6 text-center\">학생회비 납부 여부</dt>");
 	  				out.println("<dd class=\"col-sm-6 text-center\">" + mem + "</dd>");
-	  				out.println("<dt class=\"col-sm-6 text-center\">학과</dt>");
+	  				out.println("<dt class=\"col-sm-6 text-center\">전공</dt>");
 	  				out.println("<dd class=\"col-sm-6 text-center\">" + depart + "</dd>");
 	  				out.println("</dl>");
 					out.println("<button type=\"button\" class=\"btn updateInfoBtn\" id=\"chBtn\" data-bs-toggle=\"modal\" data-bs-target=\"#MypageUpdateModal\">수정  <i class=\"fas fa-user-edit\"></i></button>");

@@ -75,7 +75,7 @@
   	</div>
   	<div id="studentList" class="container">
  		<%
-		query = "select sid as 학번, pwd as 비밀번호, Sname as 이름, phone as 휴대전화, Membership as 학생회비납부여부, dname as 전공 "
+		query = "select sid as 학번, pwd as 비밀번호, Sname as 이름, phone as 휴대폰, Membership as 학생회비납부여부, dname as 전공 "
 				+ "from student, DEPARTMENT "
 				+ "where dnumber=dno";
 	
