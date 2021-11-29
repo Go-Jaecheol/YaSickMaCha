@@ -108,8 +108,14 @@ h3 {
 	width: 150px;
 	display: block;
 }
-#chBtn {
+.btn-toolbar {
 	float: right;
+}
+.updateInfoBtn {
+	margin-right: 10px;
+}
+.deleteBtn {
+	margin-left: 10px;
 }
 </style>
 <title>YSMC</title>
@@ -156,7 +162,10 @@ h3 {
 	  				out.println("<dt class=\"col-sm-6 text-center\">전공</dt>");
 	  				out.println("<dd class=\"col-sm-6 text-center\">" + depart + "</dd>");
 	  				out.println("</dl>");
-					out.println("<button type=\"button\" class=\"btn updateInfoBtn\" id=\"chBtn\" data-bs-toggle=\"modal\" data-bs-target=\"#MypageUpdateModal\">수정  <i class=\"fas fa-user-edit\"></i></button>");
+	  				out.println("<div class=\"btn-toolbar\">");
+	  				out.println("<button type=\"button\" class=\"btn updateInfoBtn\" id=\"chBtn\" data-bs-toggle=\"modal\" data-bs-target=\"#MypageUpdateModal\">수정  <i class=\"fas fa-user-edit\"></i></button>");
+	  				out.println("<button type=\"button\" class=\"btn deleteBtn\" id=\"delBtn\" data-bs-toggle=\"modal\" data-bs-target=\"#DeleteModal\">탈퇴  <i class=\"fas fa-user-slash\"></i></button>");
+	  				out.println("</div>");
 				} %>
   			</div>
 			<div class="tab-pane fade" id="nav-menu" role="tabpanel" aria-labelledby="nav-menu-tab">
@@ -331,12 +340,25 @@ h3 {
 						<p id="ModalComment"></p>
 					</div>
 						<div class="modal-footer">
-						<form action="ratingDelete.jsp" method="POST">
-							<input type="hidden" id="floatingMname" class="form-control" name="mid" value="" readonly>
-							<button type="submit" class="btn form-control btn-danger" id="deleteBtn"><i class="fas fa-trash-alt"></i></button>
-						</form>
+							<form action="ratingDelete.jsp" method="POST">
+								<input type="hidden" id="floatingMname" class="form-control" name="mid" value="" readonly>
+								<button type="submit" class="btn form-control btn-danger" id="deleteBtn"><i class="fas fa-trash-alt"></i></button>
+							</form>
 						</div>
-    				</div>
+   					</div>
+	  		  </div>
+			</div>
+		
+		<div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+		  		<div class="modal-content">
+		      		<div class="modal-header">
+		        		<h5 class="modal-title" id="DeleteModalLabel">알림</h5>
+		        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      		</div>
+					<div class="modal-body text-center">
+						<h3>정말 <button type="button" class="btn btn-danger modalBtns" onclick="location.href='deleteStudent.jsp'">탈퇴</button> 하시겠습니까?</h3>
+					</div>
 		  		</div>
 			</div>
 		</div>

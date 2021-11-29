@@ -41,7 +41,7 @@ body {
 }
 .updateInfoBtn {
 	padding: .5em 1em;
-  	background: #efefef;
+  	background: #a5b2e9;
   	border: none;
   	border-radius: .5rem;
   	color: #444;
@@ -53,7 +53,23 @@ body {
  	box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
    	            -6px -6px 10px rgba(255, 255, 255, .5),
        	    	 6px 6px 8px rgba(255, 255, 255, .075),
-            	 6px 6px 10px rgba(0, 0, 0, .15);
+            	 6px 6px 10px rgba(0, 0, 0, .15);	
+}
+.deleteBtn {
+	padding: .5em 1em;
+  	background: #f2a6a6;
+  	border: none;
+  	border-radius: .5rem;
+  	color: #444;
+  	font-size: 1rem;
+  	font-weight: 700;
+  	letter-spacing: .2rem;
+  	outline: none;
+  	transition: .2s ease-in-out;
+ 	box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
+   	            -6px -6px 10px rgba(255, 255, 255, .5),
+       	    	 6px 6px 8px rgba(255, 255, 255, .075),
+            	 6px 6px 10px rgba(0, 0, 0, .15);	
 }
 .modalBtns {
 	margin: auto;
@@ -89,11 +105,25 @@ body {
        	    	 6px 6px 8px rgba(255, 255, 255, .075),
             	 6px 6px 10px rgba(0, 0, 0, .15);
 }
-.formSubmitBtns:hover, .linkBtns:hover, .updateInfoBtn:hover, .modalBtns:hover, .adminBtns:hover {
+.formSubmitBtns:hover, .linkBtns:hover, .modalBtns:hover, .adminBtns:hover {
 	box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
               	-2px -2px 4px rgba(255, 255, 255, .4),
               	 2px 2px 2px rgba(255, 255, 255, .05),
               	 2px 2px 4px rgba(0, 0, 0, .1);
+}
+.updateInfoBtn:hover {
+	background: #5389f3;
+	box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+              	-2px -2px 4px rgba(255, 255, 255, .4),
+              	 2px 2px 2px rgba(255, 255, 255, .05),
+              	 2px 2px 4px #5389f3;	
+}
+.deleteBtn:hover {
+	background: #f35353;
+	box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+              	-2px -2px 4px rgba(255, 255, 255, .4),
+              	 2px 2px 2px rgba(255, 255, 255, .05),
+              	 2px 2px 4px #f35353;
 }
 #adminSearchBtn {
 	margin: 0 0 0 10px;
