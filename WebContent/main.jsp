@@ -60,6 +60,13 @@ h1 {
 	box-shadow: 0 8px 20px 0 rgba(0,0,0,0.15);
 	align-items: center;
 }
+#menuList          { overflow: auto; height: 600px; }
+#menuList thead tr { position: sticky; top: 0; z-index: 1; }
+
+table  { border-collapse: collapse; width: 100%; }
+tr, td { padding: 8px 16px; }
+tr     { background:#ffffff; }
+
 #menuContent {
 	height: 150px;
  	width: 150px;
@@ -153,6 +160,7 @@ h1 {
 				}
 				out.println("</tr>");
 				out.println("</thead>");
+				out.println("<tbody>");
 				do {
 					// Fill out your code
 					Mid = rs.getString(1);
@@ -202,6 +210,7 @@ h1 {
 					out.println("</tr>");
 					rs_temp.close();
 				} while(rs.next());
+				out.println("</tbody>");
 				out.println("</table");
 			}
 		} catch (SQLException e) {
