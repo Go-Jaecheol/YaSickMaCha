@@ -195,7 +195,7 @@ h3 {
 							storen = rs.getString(2);
 							mname = rs.getString(3);
 							mid = rs.getString(4);
-							isget = (rs.getString(4).equals("N") ? "X" : "O");
+							isget = (rs.getString(5).equals("N") ? "X" : "O");
 							out.println("<td class=\"text-center\">" + season + "</td>");
 							out.println("<td class=\"text-center\">" + storen + "</td>");
 							out.println("<td class=\"text-center\">" + mname + "</td>");
