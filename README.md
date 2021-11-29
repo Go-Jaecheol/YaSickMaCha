@@ -35,6 +35,6 @@ eclipse
 `SELECT ~ FOR UPDATE` 구문을 이용하여 메뉴 신청에 대한 다중 사용자 동시성 제어를 수행 (in menuInfoUpdate.jsp)
 
 ## Contributor
-![고재철](https://github.com/Go-Jaecheol)
-![백성욱](https://github.com/SeongukBaek)
-![백승찬](https://github.com/Backseungchan)
+[고재철](https://github.com/Go-Jaecheol)
+[백성욱](https://github.com/SeongukBaek)
+[백승찬](https://github.com/Backseungchan)
